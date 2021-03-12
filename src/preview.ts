@@ -125,7 +125,7 @@ export default class Preview {
     }
 
     private getContent(document: TextDocument): string {
-        if (!workspace.getConfiguration('mjml').updateOnSeparateFileChange) {
+        if (!workspace.getConfiguration('mjml').switchOnSeparateFileChange) {
             document = this.openedDocuments[0] || document
         }
 

@@ -4,7 +4,7 @@ This is a fork of the [@mjmlio extension](https://github.com/mjmlio/vscode-mjml)
 
 ## Differences
 
--   `mjml.updateOnSeparateFileChange`: optionally restrict preview to original file used to open it.
+-   `mjml.switchOnSeparateFileChange`: optionally restrict preview to original file used to open it, reflects external updates.
 
 ---
 
@@ -86,7 +86,7 @@ The following command is available:
 | `mjml.showSaveDialog`             | `false`   | Show the save as dialog instead of input box.                                                                     |
 | `mjml.templateGallery`            | `false`   | Show the template gallery instead of quick pick.                                                                  |
 | `mjml.templateGalleryAutoClose`   | `true`    | Automatically close template gallery when selecting a template.                                                   |
-| `mjml.updateOnSeparateFileChange` | `true`    | Automatically update preview when editing a different file.                                                       |
+| `mjml.switchOnSeparateFileChange` | `true`    | Automatically switch preview when editing a different file.                                                       |
 
 ## Snippets
 
