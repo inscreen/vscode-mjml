@@ -5,6 +5,7 @@ This is a fork of the [@mjmlio extension](https://github.com/mjmlio/vscode-mjml)
 ## Differences
 
 -   `mjml.switchOnSeparateFileChange`: optionally restrict preview to original file used to open it, reflects external updates.
+-   Attribute auto-completion within tags.
 
 ---
 

@@ -2,9 +2,7 @@
     "compilerOptions": {
         "alwaysStrict": true,
         "forceConsistentCasingInFileNames": true,
-        "lib": [
-            "es6"
-        ],
+        "lib": ["es6"],
         "module": "commonjs",
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": true,
@@ -14,20 +12,16 @@
         "noUnusedParameters": true,
         "outDir": "out",
         "removeComments": true,
-        "rootDir": "src",
+        "rootDir": ".",
         "sourceMap": true,
         "strict": true,
         "strictFunctionTypes": true,
         "strictNullChecks": true,
         "strictPropertyInitialization": true,
         "target": "es6",
-        "typeRoots": [
-            "./node_modules/@types",
-            "./typings/"
-        ]
+        "typeRoots": ["./node_modules/@types", "./typings/"],
+        "resolveJsonModule": true,
+        "esModuleInterop": true
     },
-    "exclude": [
-        "./documentation",
-        "./node_modules/"
-    ]
+    "exclude": ["./documentation", "./node_modules/"]
 }

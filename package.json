@@ -55,7 +55,7 @@
         "onCommand:mjml.version",
         "onLanguage:mjml"
     ],
-    "main": "./out/extension",
+    "main": "./out/src/extension",
     "contributes": {
         "configuration": {
             "type": "object",

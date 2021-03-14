@@ -11,6 +11,7 @@ import Preview from './preview'
 import Screenshot from './screenshot'
 import Template from './template'
 import Version from './version'
+import Completion from './completion'
 
 import { isMJMLFile } from './helper'
 
@@ -32,6 +33,7 @@ export function activate(extensionContext: ExtensionContext) {
         new Screenshot(context.subscriptions),
         new Template(context),
         new Version(context.subscriptions),
+        new Completion(context.subscriptions),
     ]
 
     // Detect MJML 3
