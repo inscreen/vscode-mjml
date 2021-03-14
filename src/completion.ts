@@ -7,7 +7,7 @@ import {
     CompletionList,
     ProviderResult,
 } from 'vscode'
-import attributes from './snippets/attributes.json'
+import attributes from './snippets/attributes'
 
 export default class Completion {
     constructor(subscriptions: Disposable[]) {

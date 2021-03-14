@@ -19,9 +19,7 @@
         "strictNullChecks": true,
         "strictPropertyInitialization": true,
         "target": "es6",
-        "typeRoots": ["./node_modules/@types", "./typings/"],
-        "resolveJsonModule": true,
-        "allowSyntheticDefaultImports": true
+        "typeRoots": ["./node_modules/@types", "./typings/"]
     },
     "exclude": ["./documentation", "./node_modules/"]
 }
