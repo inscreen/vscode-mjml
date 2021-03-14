@@ -31,7 +31,7 @@ export default class Completion {
                     }
                 })
 
-                if (!isWithinTag) return
+                if (!isWithinTag || !attributes) return
 
                 Object.values(attributes).forEach((attr) => {
                     const snippetCompletion = new CompletionItem(attr.prefix)
