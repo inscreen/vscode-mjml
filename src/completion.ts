@@ -36,8 +36,9 @@ export default class Completion {
                 Object.values(attributes).forEach((attr) => {
                     const snippetCompletion = new CompletionItem(attr.prefix)
 
-                    snippetCompletion.insertText = new SnippetString(attr.body)
+                    snippetCompletion.detail = 'MJML'
                     snippetCompletion.documentation = new MarkdownString(attr.description)
+                    snippetCompletion.insertText = new SnippetString(attr.body)
 
                     snippetCompletions.push(snippetCompletion)
                 })

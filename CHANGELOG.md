@@ -3,6 +3,10 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [0.1.4] (2021-03-14)
+
+Enhanced attribute completion description.
+
 ### [0.1.3] (2021-03-14)
 
 Convert snippet from JSON to JS.
