@@ -12,7 +12,7 @@
         "noUnusedParameters": true,
         "outDir": "out",
         "removeComments": true,
-        "rootDir": ".",
+        "rootDir": "./src",
         "sourceMap": true,
         "strict": true,
         "strictFunctionTypes": true,
@@ -21,7 +21,7 @@
         "target": "es6",
         "typeRoots": ["./node_modules/@types", "./typings/"],
         "resolveJsonModule": true,
-        "esModuleInterop": true
+        "allowSyntheticDefaultImports": true
     },
     "exclude": ["./documentation", "./node_modules/"]
 }

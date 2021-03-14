@@ -129,13 +129,9 @@ export default class Preview {
             document = this.openedDocuments[0] || document
         }
 
-        const html: string = mjmlToHtml(
-            document.getText(),
-            false,
-            false,
-            document.uri.fsPath,
-            'skip',
-        ).html
+        const docText = document.getText()
+
+        const html: string = mjmlToHtml(docText, false, false, document.uri.fsPath, 'skip').html
 
         if (html) {
             this.addDocument(document)
