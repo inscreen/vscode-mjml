@@ -3,6 +3,10 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [0.2.1] (2021-03-16)
+
+Added `node_modules` to `.vscodeignore` to reduce extension size.
+
 ### [0.2.0] (2021-03-16)
 
 CSS property/value completions within `mj-style` tags.
