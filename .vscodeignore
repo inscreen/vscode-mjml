@@ -22,4 +22,5 @@ node_modules
 !node_modules/copy-paste
 !node_modules/node-mailjet
 !node_modules/@babel
+!node_modules/lodash
 !node_modules/juice
