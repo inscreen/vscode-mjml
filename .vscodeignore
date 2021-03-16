@@ -15,3 +15,12 @@ test/**
 ISSUE_TEMPLATE.md
 tsconfig.json
 node_modules
+!node_modules/copy-paste
+!node_modules/js-beautify
+!node_modules/mime
+!node_modules/mjml
+!node_modules/node-fetch
+!node_modules/node-mailjet
+!node_modules/nodemailer
+!node_modules/npm
+!node_modules/phantom
