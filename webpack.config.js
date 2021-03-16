@@ -27,6 +27,7 @@ const config = {
         '@babel': 'commonjs @babel',
         lodash: 'commonjs lodash',
         juice: 'commonjs juice',
+        mensch: 'commonjs mensch',
     },
     resolve: {
         // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader

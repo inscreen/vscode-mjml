@@ -24,3 +24,4 @@ node_modules
 !node_modules/@babel
 !node_modules/lodash
 !node_modules/juice
+!node_modules/mensch
