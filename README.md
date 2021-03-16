@@ -4,10 +4,22 @@ This is a fork of the [@mjmlio extension](https://github.com/mjmlio/vscode-mjml)
 
 ## Differences
 
+### Additions:
+
 -   `mjml.switchOnSeparateFileChange`: optionally restrict preview to original file used to open it, reflects external updates.
 -   Attribute auto-completion within tags.
 -   CSS property/value completion within `mj-style` tags.
--   Reduced extension size.
+
+### Removals:
+
+-   No template feature.
+-   No screenshot feature.
+-   No email sending feature.
+-   No documentation feature.
+-   No migration feature.
+-   No `mj-link` snippet as it's deprecated.
+
+The reason for removing these features is they take up a massive chunk of the overall extension size (over 70mb of a roughly 80mb package).
 
 ---
 
@@ -19,14 +31,9 @@ MJML preview, lint, compile for Visual Studio Code.
 -   Inline errors (squiggle underlines). Linter based on [atom-linter-mjml](https://github.com/mjmlio/atom-linter-mjml).
 -   Export HTML file from MJML.
 -   Copy the result HTML to clipboard.
--   Take a screenshot of the rendered MJML document.
--   Send email with Nodemailer or Mailjet.
 -   Code snippets for MJML. Based on [mjml-syntax](https://github.com/mjmlio/mjml-syntax).
--   Fetch official templates. Based on [mjml-app](https://github.com/mjmlio/mjml-app).
 -   Beautify MJML code.
--   Migrate a template from MJML 3 to MJML 4.
 -   MJML syntax highlight. Based on [mjml-syntax](https://github.com/mjmlio/mjml-syntax).
--   Built-in MJML documentation with `Try it live` support.
 
 ## It looks like this
 
@@ -36,60 +43,40 @@ MJML preview, lint, compile for Visual Studio Code.
 
 ## Installation
 
-Press `F1`, type `ext install vscode-mjml`.
+-   [From the VS Marketplace.](https://marketplace.visualstudio.com/items?itemName=DanielKnights.vscode-mjml)
+-   From the extensions bar in VSCode.
 
 ## Usage
 
-Start command palette (with `Ctrl+Shift+P` or `F1`) and start typing `MJML`.
+Start command palette and start typing `MJML`.
 
 ## Available commands
 
-The following command is available:
+The following commands are available:
 
 -   **MJML: Beautify** or **Format Document** Beautify MJML code.
 -   **MJML: Copy HTML** Copy the result HTML to clipboard.
 -   **MJML: Export HTML** Export HTML file from MJML.
--   **MJML: Migrate** Migrate a template from MJML 3 to MJML 4.
--   **MJML: Multiple Screenshots** Take multiple screenshots of the rendered MJML document.
 -   **MJML: Open Preview to the Side** Opens a preview in a column alongside the current document.
--   **MJML: Screenshot** Take a screenshot of the rendered MJML document, and save it as a file.
--   **MJML: Send Email** Send email with Nodemailer or Mailjet.
--   **MJML: Template** Fetch official templates.
--   **MJML: Documentation** open the MJML documentation.
--   **MJML: Search in MJML documentation** search for the selected mj-element in the MJML documentation.
 -   **MJML: Version** Shows the version of MJML.
 
 ## Settings
 
-| Name                              | Default   | Description                                                                                                       |
-| --------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------- |
-| `mjml.autoPreview`                | `false`   | Automatically update preview when switching between MJML documents.                                               |
-| `mjml.beautifyHtmlOutput`         | `false`   | Beautify HTML output. (Works when `mjml.minifyHtmlOutput` aren't enabled.)                                        |
-| `mjml.beautify`                   | ` `       | Beautify options ([available options](https://github.com/beautify-web/js-beautify#options)).                      |
-| `mjml.exportType`                 | `.html`   | Specifies the file type of the output file.                                                                       |
-| `mjml.lintEnable`                 | `true`    | Enable/disable MJML linter (requires restart).                                                                    |
-| `mjml.lintWhenTyping`             | `true`    | Whether the linter is run on type or on save.                                                                     |
-| `mjml.mailFromName`               | ` `       | Sender name.                                                                                                      |
-| `mjml.mailRecipients`             | ` `       | Comma separated list of recipients email addresses.                                                               |
-| `mjml.mailSender`                 | ` `       | Sender email address. (Mailjet: must be a verified sender.)                                                       |
-| `mjml.mailSubject`                | ` `       | Email subject.                                                                                                    |
-| `mjml.mailer`                     | `mailjet` | Send email with Nodemailer or Mailjet. Possible values are 'nodemailer' and 'mailjet'.                            |
-| `mjml.mailjetAPIKey`              | ` `       | Mailjet API Key.                                                                                                  |
-| `mjml.mailjetAPISecret`           | ` `       | Mailjet API Secret.                                                                                               |
-| `mjml.minifyHtmlOutput`           | `true`    | Minify HTML output.                                                                                               |
-| `mjml.nodemailer`                 | `{}`      | Nodemailer configuration. Please see the [Nodemailer](https://nodemailer.com) documentation for more information. |
-| `mjml.preserveFocus`              | `true`    | Preserve focus of Text Editor after preview open.                                                                 |
-| `mjml.screenshotQuality`          | `75`      | Screenshot quality.                                                                                               |
-| `mjml.screenshotType`             | `jpg`     | Screenshot type. Possible values are 'png', 'jpg', and 'jpeg'.                                                    |
-| `mjml.screenshotWidth`            | `650`     | Screenshot width.                                                                                                 |
-| `mjml.screenshotWidths`           | `640,750` | Screenshot widths.                                                                                                |
-| `mjml.updateWhenTyping`           | `true`    | Update preview when typing.                                                                                       |
-| `mjml.previewBackgroundColor`     | ` `       | Preview background color.                                                                                         |
-| `mjml.autoClosePreview`           | `true`    | Automatically close preview when all open MJML documents have been closed.                                        |
-| `mjml.showSaveDialog`             | `false`   | Show the save as dialog instead of input box.                                                                     |
-| `mjml.templateGallery`            | `false`   | Show the template gallery instead of quick pick.                                                                  |
-| `mjml.templateGalleryAutoClose`   | `true`    | Automatically close template gallery when selecting a template.                                                   |
-| `mjml.switchOnSeparateFileChange` | `true`    | Automatically switch preview when editing a different file.                                                       |
+| Name                              | Default | Description                                                                                  |
+| --------------------------------- | ------- | -------------------------------------------------------------------------------------------- |
+| `mjml.autoPreview`                | `false` | Automatically update preview when switching between MJML documents.                          |
+| `mjml.beautifyHtmlOutput`         | `false` | Beautify HTML output. (Works when `mjml.minifyHtmlOutput` aren't enabled.)                   |
+| `mjml.beautify`                   | ` `     | Beautify options ([available options](https://github.com/beautify-web/js-beautify#options)). |
+| `mjml.exportType`                 | `.html` | Specifies the file type of the output file.                                                  |
+| `mjml.lintEnable`                 | `true`  | Enable/disable MJML linter (requires restart).                                               |
+| `mjml.lintWhenTyping`             | `true`  | Whether the linter is run on type or on save.                                                |
+| `mjml.minifyHtmlOutput`           | `true`  | Minify HTML output.                                                                          |
+| `mjml.preserveFocus`              | `true`  | Preserve focus of Text Editor after preview open.                                            |
+| `mjml.updateWhenTyping`           | `true`  | Update preview when typing.                                                                  |
+| `mjml.previewBackgroundColor`     | ` `     | Preview background color.                                                                    |
+| `mjml.autoClosePreview`           | `true`  | Automatically close preview when all open MJML documents have been closed.                   |
+| `mjml.showSaveDialog`             | `false` | Show the save as dialog instead of input box.                                                |
+| `mjml.switchOnSeparateFileChange` | `true`  | Automatically switch preview when editing a different file.                                  |
 
 ## Snippets
 
@@ -127,61 +114,11 @@ The following command is available:
 | `mjaccordion-element` | [mj-accordion-element](https://github.com/mjmlio/mjml/blob/master/packages/mjml-accordion/README.md#mjml-accordion-element) | `<mj-accordion-element>...</mj-accordion-element>` |
 | `mjnavbar`            | [mj-navbar](https://github.com/mjmlio/mjml/blob/master/packages/mjml-navbar/README.md)                                      | `<mj-navbar></mj-navbar>`                          |
 | `mjnavbarlink`        | [mj-navbar-link](https://github.com/mjmlio/mjml/blob/master/packages/mjml-navbar/README.md#mjml-navbar-link)                | `<mj-navbar-link></mj-navbar-link>`                |
-| `mjlink`              | [mj-link](https://mjml.io/documentation/#mjml-navbar)                                                                       | `<mj-link href=""></mj-link>`                      |
 | `mjml-`               |                                                                                                                             | Basic MJML Template                                |
-
-## Nodemailer configuration
-
-Please see the [Nodemailer](https://nodemailer.com) documentation for more information.
-
-### [Gmail](https://gmail.com)
-
-```json
-"mjml.nodemailer": {
-    "service": "Gmail",
-    "auth": {
-        "user": "youremail@gmail.com",
-        "pass": "password"
-    }
-}
-```
-
-### [Mailtrap](https://mailtrap.io)
-
-```json
-"mjml.nodemailer": {
-    "host": "smtp.mailtrap.io",
-    "port": 2525,
-    "auth": {
-        "user": "username",
-        "pass": "password"
-    }
-}
-```
-
-### [Ethereal](https://ethereal.email)
-
-```json
-"mjml.nodemailer": {
-    "host": "smtp.ethereal.email",
-    "port": 587,
-    "auth": {
-        "user": "youremail@ethereal.email",
-        "pass": "password"
-    }
-}
-```
-
-## Change Log
-
-### [1.0.0] (2019-11-20)
-
--   This is the initial release of this extension.
--   Update MJML to 4.5.1
 
 ## Issues
 
-Submit the [issues](https://github.com/Daniel-Knights/vscode-mjml/issues) if you find any bug or have any suggestion.
+Submit an [issue](https://github.com/Daniel-Knights/vscode-mjml/issues) if you find any bug or have any suggestion.
 
 ## Contribution
 
@@ -199,4 +136,4 @@ A big thanks to the people that have contributed to this project:
 
 ## License
 
-This extension is licensed under the [MIT License][license-url].
+This extension is licensed under the MIT License.

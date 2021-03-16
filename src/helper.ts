@@ -6,12 +6,7 @@ import { html as jsBeautify } from 'js-beautify'
 import { getExtension, getType as getMimeType } from 'mime'
 import * as mjml2html from 'mjml'
 
-export function renderMJML(
-    cb: (content: string) => any,
-    fixImg?: boolean,
-    minify?: boolean,
-    beautify?: boolean,
-): void {
+export function renderMJML(cb: (content: string) => any): void {
     const activeTextEditor: TextEditor | undefined = window.activeTextEditor
     if (!activeTextEditor) {
         return
@@ -25,15 +20,11 @@ export function renderMJML(
 
     let content: string = mjmlToHtml(
         activeTextEditor.document.getText(),
-        minify !== undefined ? minify : workspace.getConfiguration('mjml').minifyHtmlOutput,
-        beautify !== undefined ? beautify : workspace.getConfiguration('mjml').beautifyHtmlOutput,
+        workspace.getConfiguration('mjml').minifyHtmlOutput,
+        workspace.getConfiguration('mjml').beautifyHtmlOutput,
     ).html
 
     if (content) {
-        if (fixImg !== undefined && fixImg) {
-            content = fixImages(content, getPath())
-        }
-
         return cb(content)
     } else {
         window.showErrorMessage(`MJMLError: Failed to parse file ${basename(getPath())}`)

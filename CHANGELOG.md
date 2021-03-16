@@ -3,6 +3,10 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [1.0.0] (2021-03-16)
+
+Removed screenshot, email, documentation, migration and template features. Also, removed `mj-link` snippet.
+
 ### [0.2.13] (2021-03-16)
 
 Updated display name.

@@ -196,12 +196,6 @@
         "description": "MJML Navbar Link",
         "scope": "source.mjml"
     },
-    "mjlink": {
-        "prefix": "mjlink",
-        "body": "<mj-link href=\"$1\">$2</mj-link>",
-        "description": "MJML Link",
-        "scope": "source.mjml"
-    },
     "mjml-": {
         "prefix": "mjml-",
         "body": [

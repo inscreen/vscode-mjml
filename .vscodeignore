@@ -1,10 +1,6 @@
 **/*.map
 **/*.ts
 .vscode/**
-documentation/**
-!documentation/examples/*
-!documentation/images/*
-!documentation/documentation.html
 images/**/*.gif
 out/test/**
 src/**
