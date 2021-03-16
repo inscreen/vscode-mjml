@@ -24,7 +24,9 @@ const config = {
         npm: 'commonjs npm',
         'copy-paste': 'commonjs copy-paste',
         'node-mailjet': 'commonjs node-mailjet',
-        '@babel': 'commonjs @babel',
+        '@babel/runtime/helpers/interopRequireWildcard':
+            'commonjs @babel/runtime/helpers/interopRequireWildcard',
+        'lodash/isEmpty': 'commonjs lodash/isEmpty',
     },
     resolve: {
         // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader

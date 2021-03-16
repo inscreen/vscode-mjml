@@ -4,3 +4,4 @@ documentation/*
 !documentation/build.ts
 !documentation/tsconfig.json
 *.vsix
+**DS_Store
