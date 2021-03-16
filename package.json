@@ -1,6 +1,6 @@
 {
     "name": "vscode-mjml",
-    "displayName": "MJML (non-official fork)",
+    "displayName": "MJML (unofficial fork)",
     "description": "MJML preview, lint, compile for Visual Studio Code.",
     "version": "0.2.12",
     "publisher": "DanielKnights",

@@ -3,6 +3,10 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [0.2.13] (2021-03-16)
+
+Updated display name.
+
 ### [0.2.12] (2021-03-16)
 
 Scrapped Webpack integration.
