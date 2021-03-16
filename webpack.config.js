@@ -26,6 +26,7 @@ const config = {
         'node-mailjet': 'commonjs node-mailjet',
         '@babel': 'commonjs @babel',
         lodash: 'commonjs lodash',
+        juice: 'commonjs juice',
     },
     resolve: {
         // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
