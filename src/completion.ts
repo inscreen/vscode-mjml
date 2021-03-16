@@ -119,6 +119,7 @@ export default class Completion {
                     prop.values.forEach((val) => {
                         const snippetCompletion = new CompletionItem(val)
 
+                        snippetCompletion.insertText = new SnippetString(val)
                         snippetCompletion.kind = 11 // 11 = Value
 
                         snippetCompletions.push(snippetCompletion)
