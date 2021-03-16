@@ -24,6 +24,7 @@ const config = {
         npm: 'commonjs npm',
         'copy-paste': 'commonjs copy-paste',
         'node-mailjet': 'commonjs node-mailjet',
+        '@babel': 'commonjs @babel',
     },
     resolve: {
         // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader

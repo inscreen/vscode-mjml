@@ -21,3 +21,4 @@ node_modules
 !node_modules/npm
 !node_modules/copy-paste
 !node_modules/node-mailjet
+!node_modules/@babel
