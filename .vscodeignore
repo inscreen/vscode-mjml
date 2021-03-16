@@ -10,3 +10,4 @@ test/**
 .gitignore
 ISSUE_TEMPLATE.md
 tsconfig.json
+.eslintrc

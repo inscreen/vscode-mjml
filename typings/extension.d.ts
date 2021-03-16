@@ -1,6 +1,6 @@
 declare module 'mjml'
 
 declare interface WebviewMessage {
-    command: string
-    data: string
+  command: string
+  data: string
 }

@@ -6,18 +6,18 @@ This is a fork of the [@mjmlio extension](https://github.com/mjmlio/vscode-mjml)
 
 ### Additions:
 
--   `mjml.switchOnSeparateFileChange`: optionally restrict preview to original file used to open it, reflects external updates.
--   Attribute auto-completion within tags.
--   CSS property/value completion within `mj-style` tags.
+- `mjml.switchOnSeparateFileChange`: optionally restrict preview to original file used to open it, reflects external updates.
+- Attribute auto-completion within tags.
+- CSS property/value completion within `mj-style` tags.
 
 ### Removals:
 
--   No template feature.
--   No screenshot feature.
--   No email sending feature.
--   No documentation feature.
--   No migration feature.
--   No `mj-link` snippet as it's deprecated.
+- No template feature.
+- No screenshot feature.
+- No email sending feature.
+- No documentation feature.
+- No migration feature.
+- No `mj-link` snippet as it's deprecated.
 
 The reason for removing these features is they take up a massive chunk of the overall extension size (over 70mb of a roughly 80mb package).
 
@@ -27,13 +27,13 @@ MJML preview, lint, compile for Visual Studio Code.
 
 ## Features
 
--   Live preview for MJML files. Preview updates as you type. Preview based on [html-preview-vscode](https://github.com/tht13/html-preview-vscode).
--   Inline errors (squiggle underlines). Linter based on [atom-linter-mjml](https://github.com/mjmlio/atom-linter-mjml).
--   Export HTML file from MJML.
--   Copy the result HTML to clipboard.
--   Code snippets for MJML. Based on [mjml-syntax](https://github.com/mjmlio/mjml-syntax).
--   Beautify MJML code.
--   MJML syntax highlight. Based on [mjml-syntax](https://github.com/mjmlio/mjml-syntax).
+- Live preview for MJML files. Preview updates as you type. Preview based on [html-preview-vscode](https://github.com/tht13/html-preview-vscode).
+- Inline errors (squiggle underlines). Linter based on [atom-linter-mjml](https://github.com/mjmlio/atom-linter-mjml).
+- Export HTML file from MJML.
+- Copy the result HTML to clipboard.
+- Code snippets for MJML. Based on [mjml-syntax](https://github.com/mjmlio/mjml-syntax).
+- Beautify MJML code.
+- MJML syntax highlight. Based on [mjml-syntax](https://github.com/mjmlio/mjml-syntax).
 
 ## It looks like this
 
@@ -43,8 +43,8 @@ MJML preview, lint, compile for Visual Studio Code.
 
 ## Installation
 
--   [From the VS Marketplace.](https://marketplace.visualstudio.com/items?itemName=DanielKnights.vscode-mjml)
--   From the extensions bar in VSCode.
+- [From the VS Marketplace.](https://marketplace.visualstudio.com/items?itemName=DanielKnights.vscode-mjml)
+- From the extensions bar in VSCode.
 
 ## Usage
 
@@ -54,11 +54,11 @@ Start command palette and start typing `MJML`.
 
 The following commands are available:
 
--   **MJML: Beautify** or **Format Document** Beautify MJML code.
--   **MJML: Copy HTML** Copy the result HTML to clipboard.
--   **MJML: Export HTML** Export HTML file from MJML.
--   **MJML: Open Preview to the Side** Opens a preview in a column alongside the current document.
--   **MJML: Version** Shows the version of MJML.
+- **MJML: Beautify** or **Format Document** Beautify MJML code.
+- **MJML: Copy HTML** Copy the result HTML to clipboard.
+- **MJML: Export HTML** Export HTML file from MJML.
+- **MJML: Open Preview to the Side** Opens a preview in a column alongside the current document.
+- **MJML: Version** Shows the version of MJML.
 
 ## Settings
 
@@ -130,9 +130,9 @@ Main Author: Attila Buti ([@attilabuti](https://github.com/attilabuti))
 
 A big thanks to the people that have contributed to this project:
 
--   Christian Brevik ([@cbrevik](https://github.com/cbrevik)) - [contributions](https://github.com/attilabuti/vscode-mjml/commits?author=cbrevik))
--   Kevin Oliveira ([@kvnol](https://github.com/kvnol)) - [contributions](https://github.com/attilabuti/vscode-mjml/commits?author=kvnol))
--   Joshua Skrzypek ([@jskrzypek](https://github.com/jskrzypek)) - [contributions](https://github.com/attilabuti/vscode-mjml/commits?author=jskrzypek))
+- Christian Brevik ([@cbrevik](https://github.com/cbrevik)) - [contributions](https://github.com/attilabuti/vscode-mjml/commits?author=cbrevik))
+- Kevin Oliveira ([@kvnol](https://github.com/kvnol)) - [contributions](https://github.com/attilabuti/vscode-mjml/commits?author=kvnol))
+- Joshua Skrzypek ([@jskrzypek](https://github.com/jskrzypek)) - [contributions](https://github.com/attilabuti/vscode-mjml/commits?author=jskrzypek))
 
 ## License
 
