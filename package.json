@@ -38,7 +38,7 @@
     "syntax"
   ],
   "engines": {
-    "vscode": "^1.23.0"
+    "vscode": "^1.54.0"
   },
   "activationEvents": [
     "onCommand:mjml.beautify",
