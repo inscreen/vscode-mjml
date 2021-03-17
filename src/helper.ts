@@ -15,9 +15,8 @@ interface IError {
 
 export function renderMJML(cb: (content: string) => void): void {
   const activeTextEditor: TextEditor | undefined = window.activeTextEditor
-  if (!activeTextEditor) {
-    return
-  }
+
+  if (!activeTextEditor) return
 
   if (!isMJMLFile(activeTextEditor.document)) {
     window.showWarningMessage('This is not a MJML document!')
@@ -31,18 +30,15 @@ export function renderMJML(cb: (content: string) => void): void {
     workspace.getConfiguration('mjml').beautifyHtmlOutput,
   ).html
 
-  if (content) {
-    return cb(content)
-  } else {
-    window.showErrorMessage(`MJMLError: Failed to parse file ${basename(getPath())}`)
-  }
+  if (content) return cb(content)
+
+  window.showErrorMessage(`MJMLError: Failed to parse file ${basename(getPath())}`)
 }
 
 export function isMJMLFile(document: TextDocument): boolean {
-  return (
-    document.languageId === 'mjml' &&
-    (document.uri.scheme === 'file' || document.uri.scheme === 'untitled')
-  )
+  const { scheme } = document.uri
+
+  return document.languageId === 'mjml' && (scheme === 'file' || scheme === 'untitled')
 }
 
 export function mjmlToHtml(
@@ -53,9 +49,7 @@ export function mjmlToHtml(
   validation: 'strict' | 'soft' | 'skip' = 'skip',
 ): { html: string; errors: IError[] } {
   try {
-    if (!path) {
-      path = getPath()
-    }
+    if (!path) path = getPath()
 
     return mjml2html(mjml, {
       beautify,
@@ -70,40 +64,40 @@ export function mjmlToHtml(
 }
 
 export function fixImages(text: string, mjmlPath: string): string {
-  return text.replace(
-    new RegExp(/((?:src|url)(?:=|\()(?:[\'\"]|))((?!http|\\|"|#).+?)([\'\"]|\))/, 'gmi'),
-    (_1: string, start: string, src: string, end: string): string => {
-      return start + encodeImage(joinPath(dirname(mjmlPath), src), src) + end
-    },
+  const regex = new RegExp(
+    /((?:src|url)(?:=|\()(?:[\'\"]|))((?!http|\\|"|#).+?)([\'\"]|\))/,
+    'gmi',
   )
+
+  function replacer(_: string, start: string, src: string, end: string): string {
+    return start + encodeImage(joinPath(dirname(mjmlPath), src), src) + end
+  }
+
+  return text.replace(regex, replacer)
 }
 
 export function beautifyHTML(mjml: string): string | undefined {
   try {
-    const replaced: string = mjml.replace(
-      new RegExp(/<.*mj-style[^>]*>(?:[^<>]+)<.*\/.*mj-style>/, 'gmi'),
-      (style: string): string => {
-        return style.replace(/mj-style/gi, 'style')
-      },
-    )
+    const mjStyleRegex = new RegExp(/<.*mj-style[^>]*>(?:[^<>]+)<.*\/.*mj-style>/, 'gmi')
+    const replaced: string = mjml.replace(mjStyleRegex, (style: string): string => {
+      return style.replace(/mj-style/gi, 'style')
+    })
 
-    const beautified: string = jsBeautify(
-      replaced,
-      workspace.getConfiguration('mjml').beautify,
-    )
+    const { beautify } = workspace.getConfiguration('mjml')
+    const beautified: string = jsBeautify(replaced, beautify)
 
     if (replaced !== mjml) {
-      return beautified.replace(
-        new RegExp(/<.*style[^>]*>(?:[^<>]+)<.*\/.*style>/, 'gmi'),
-        (styleBlock: string): string => {
-          return styleBlock.replace(
-            new RegExp(/<.*style.*>/, 'gi'),
-            (style: string): string => {
-              return style.replace('style', 'mj-style')
-            },
-          )
-        },
-      )
+      const styleTagsRegex = new RegExp(/<.*style[^>]*>(?:[^<>]+)<.*\/.*style>/, 'gmi')
+
+      return beautified.replace(styleTagsRegex, (styleBlock: string): string => {
+        const styleRegex = new RegExp(/<.*style.*>/, 'gi')
+
+        function replacer(style: string): string {
+          return style.replace('style', 'mj-style')
+        }
+
+        return styleBlock.replace(styleRegex, replacer)
+      })
     }
 
     return beautified
@@ -132,23 +126,20 @@ function getCWD(mjmlPath?: string): string {
 
 function encodeImage(filePath: string, original: string): string {
   const mimeType: string | null = getMimeType(filePath)
-  if (!mimeType) {
-    return original
-  }
+
+  if (!mimeType) return original
 
   const extension: string | null = getExtension(mimeType)
-  if (
-    !extension ||
-    ['bmp', 'gif', 'jpeg', 'jpg', 'png', 'svg'].indexOf(extension) === -1
-  ) {
+  const imageExtensions = ['bmp', 'gif', 'jpeg', 'jpg', 'png', 'svg']
+
+  if (!extension || imageExtensions.indexOf(extension) === -1) {
     return original
   }
 
   if (filePath && existsSync(filePath) && statSync(filePath).isFile()) {
     const data: Buffer = readFileSync(filePath)
-    if (data) {
-      return `data:${mimeType};base64,${data.toString('base64')}`
-    }
+
+    if (data) return `data:${mimeType};base64,${data.toString('base64')}`
   }
 
   return original

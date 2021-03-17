@@ -8,10 +8,10 @@ import Preview from './preview'
 import Version from './version'
 import Completion from './completion'
 
+type ExtensionFeatures = [Beautify, Copy, Export, Linter, Preview, Version, Completion]
+
 let context: ExtensionContext
-let extensionFeatures:
-  | [Beautify, Copy, Export, Linter, Preview, Version, Completion]
-  | [] = []
+let extensionFeatures: ExtensionFeatures | [] = []
 
 export function activate(extensionContext: ExtensionContext): void {
   context = extensionContext
@@ -31,9 +31,9 @@ export function deactivate(): void {
   for (const feature of extensionFeatures) {
     const typedFeature = feature as Disposable
 
-    if (typeof typedFeature.dispose === 'function') {
-      typedFeature.dispose()
-    }
+    if (typeof typedFeature.dispose !== 'function') return
+
+    typedFeature.dispose()
   }
 
   for (const subscription of context.subscriptions) {

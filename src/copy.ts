@@ -6,18 +6,12 @@ import { renderMJML } from './helper'
 
 export default class Copy {
   constructor(subscriptions: Disposable[]) {
-    subscriptions.push(
-      commands.registerCommand('mjml.copyHTML', () => {
-        this.copy()
-      }),
-    )
+    subscriptions.push(commands.registerCommand('mjml.copyHTML', this.copy))
   }
 
   private copy(): void {
     renderMJML((content: string) => {
-      copy(content, () => {
-        window.showInformationMessage('Copied!')
-      })
+      copy(content, () => window.showInformationMessage('Copied!'))
     })
   }
 }

@@ -17,25 +17,18 @@ export default class Beautify {
   constructor(subscriptions: Disposable[]) {
     subscriptions.push(
       languages.registerDocumentFormattingEditProvider(
-        {
-          language: 'mjml',
-          scheme: 'file',
-        },
+        { language: 'mjml', scheme: 'file' },
         {
           provideDocumentFormattingEdits(document: TextDocument): TextEdit[] {
-            const formattedDocument: string | undefined = beautifyHTML(document.getText())
-            if (formattedDocument) {
-              return [TextEdit.replace(getRange(document), formattedDocument)]
-            }
+            const docText = document.getText()
+            const formattedDocument: string | undefined = beautifyHTML(docText) || docText
 
-            return [TextEdit.replace(getRange(document), document.getText())]
+            return [TextEdit.replace(getRange(document), formattedDocument)]
           },
         },
       ),
 
-      commands.registerCommand('mjml.beautify', () => {
-        this.beautify()
-      }),
+      commands.registerCommand('mjml.beautify', this.beautify),
     )
   }
 
@@ -48,9 +41,9 @@ export default class Beautify {
           activeTextEditor.document.getText(),
         )
 
-        if (formattedDocument) {
-          editBuilder.replace(getRange(activeTextEditor.document), formattedDocument)
-        }
+        if (!formattedDocument) return
+
+        editBuilder.replace(getRange(activeTextEditor.document), formattedDocument)
       })
     } else {
       window.showWarningMessage('This is not a MJML document!')
@@ -61,11 +54,10 @@ export default class Beautify {
 }
 
 function getRange(document: TextDocument): Range {
+  const lineCount = document.lineCount - 1
+
   return new Range(
     new Position(0, 0),
-    new Position(
-      document.lineCount - 1,
-      document.lineAt(document.lineCount - 1).text.length,
-    ),
+    new Position(lineCount, document.lineAt(lineCount).text.length),
   )
 }

@@ -19,50 +19,48 @@ export default class Linter {
   private diagnosticCollection!: DiagnosticCollection
 
   constructor(subscriptions: Disposable[]) {
-    if (workspace.getConfiguration('mjml').lintEnable) {
-      this.diagnosticCollection = languages.createDiagnosticCollection('mjml')
+    if (!workspace.getConfiguration('mjml').lintEnable) return
 
-      subscriptions.push(
-        this.diagnosticCollection,
+    this.diagnosticCollection = languages.createDiagnosticCollection('mjml')
 
-        window.onDidChangeActiveTextEditor((editor?: TextEditor) => {
-          if (editor && editor.document) {
-            this.lintDocument(editor.document)
-          }
-        }),
+    subscriptions.push(
+      this.diagnosticCollection,
 
-        workspace.onDidChangeTextDocument((event?: TextDocumentChangeEvent) => {
-          if (
-            event &&
-            event.document &&
-            workspace.getConfiguration('mjml').lintWhenTyping
-          ) {
-            this.lintDocument(event.document)
-          }
-        }),
+      window.onDidChangeActiveTextEditor((editor?: TextEditor) => {
+        if (!editor || !editor.document) return
 
-        workspace.onDidCloseTextDocument((document?: TextDocument) => {
-          if (document) {
-            this.diagnosticCollection.delete(document.uri)
-          }
-        }),
+        this.lintDocument(editor.document)
+      }),
 
-        workspace.onDidOpenTextDocument((document?: TextDocument) => {
-          if (document) {
-            this.lintDocument(document)
-          }
-        }),
+      workspace.onDidChangeTextDocument((event?: TextDocumentChangeEvent) => {
+        const { lintWhenTyping } = workspace.getConfiguration('mjml')
 
-        workspace.onDidSaveTextDocument((document?: TextDocument) => {
-          if (document) {
-            this.lintDocument(document)
-          }
-        }),
-      )
+        if (!event || !event.document || !lintWhenTyping) return
 
-      // Lint all open mjml documents
-      workspace.textDocuments.forEach(this.lintDocument, this)
-    }
+        this.lintDocument(event.document)
+      }),
+
+      workspace.onDidCloseTextDocument((document?: TextDocument) => {
+        if (!document) return
+
+        this.diagnosticCollection.delete(document.uri)
+      }),
+
+      workspace.onDidOpenTextDocument((document?: TextDocument) => {
+        if (!document) return
+
+        this.lintDocument(document)
+      }),
+
+      workspace.onDidSaveTextDocument((document?: TextDocument) => {
+        if (!document) return
+
+        this.lintDocument(document)
+      }),
+    )
+
+    // Lint all open mjml documents
+    workspace.textDocuments.forEach(this.lintDocument, this)
   }
 
   public dispose(): void {
@@ -71,9 +69,7 @@ export default class Linter {
   }
 
   private lintDocument(textDocument: TextDocument): void {
-    if (textDocument.languageId !== 'mjml') {
-      return
-    }
+    if (textDocument.languageId !== 'mjml') return
 
     const diagnostics: Diagnostic[] = []
 

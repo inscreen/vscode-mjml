@@ -33,71 +33,60 @@ export default class Preview {
       }),
 
       workspace.onDidOpenTextDocument((document?: TextDocument) => {
-        if (
-          document &&
-          this.previewOpen &&
-          workspace.getConfiguration('mjml').autoPreview
-        ) {
-          this.displayWebView(document)
-        }
+        const { autoPreview } = workspace.getConfiguration('mjml')
+
+        if (!document || !this.previewOpen || !autoPreview) return
+
+        this.displayWebView(document)
       }),
 
       window.onDidChangeActiveTextEditor((editor?: TextEditor) => {
-        if (
-          editor &&
-          this.previewOpen &&
-          workspace.getConfiguration('mjml').autoPreview
-        ) {
-          this.displayWebView(editor.document)
-        }
+        const { autoPreview } = workspace.getConfiguration('mjml')
+
+        if (!editor || !this.previewOpen || !autoPreview) return
+
+        this.displayWebView(editor.document)
       }),
 
       workspace.onDidChangeTextDocument((event?: TextDocumentChangeEvent) => {
-        if (
-          event &&
-          this.previewOpen &&
-          workspace.getConfiguration('mjml').updateWhenTyping
-        ) {
-          this.displayWebView(event.document)
-        }
+        const { updateWhenTyping } = workspace.getConfiguration('mjml')
+
+        if (!event || !this.previewOpen || !updateWhenTyping) return
+
+        this.displayWebView(event.document)
       }),
 
       workspace.onDidSaveTextDocument((document?: TextDocument) => {
-        if (document && this.previewOpen) {
-          this.displayWebView(document)
-        }
+        if (!document || !this.previewOpen) return
+
+        this.displayWebView(document)
       }),
 
       workspace.onDidCloseTextDocument((document?: TextDocument) => {
-        if (document && this.previewOpen && this.webview) {
-          this.removeDocument(document.fileName)
+        if (!document || !this.previewOpen || !this.webview) return
 
-          if (
-            this.openedDocuments.length === 0 &&
-            workspace.getConfiguration('mjml').autoClosePreview
-          ) {
-            this.dispose()
-          }
-        }
+        this.removeDocument(document.fileName)
+
+        const { autoClosePreview } = workspace.getConfiguration('mjml')
+
+        if (this.openedDocuments.length !== 0 || autoClosePreview) return
+
+        this.dispose()
       }),
     )
   }
 
   public dispose(): void {
-    if (this.webview !== undefined) {
-      this.webview.dispose()
-    }
+    if (this.webview === undefined) return
+
+    this.webview.dispose()
   }
 
   private displayWebView(document: TextDocument): void {
-    if (!isMJMLFile(document)) {
-      return
-    }
+    if (!isMJMLFile(document)) return
 
     const activeTextEditor: TextEditor | undefined = window.activeTextEditor
-    if (!activeTextEditor || !activeTextEditor.document) {
-      return
-    }
+    if (!activeTextEditor || !activeTextEditor.document) return
 
     const content: string = this.getContent(document)
     const label = `MJML Preview - ${basename(activeTextEditor.document.fileName)}`
@@ -134,7 +123,6 @@ export default class Preview {
     }
 
     const docText = document.getText()
-
     const html: string = mjmlToHtml(docText, false, false, document.uri.fsPath, 'skip')
       .html
 
@@ -148,16 +136,16 @@ export default class Preview {
   }
 
   private setBackgroundColor(html: string): string {
-    if (workspace.getConfiguration('mjml').previewBackgroundColor) {
+    const { previewBackgroundColor } = workspace.getConfiguration('mjml')
+
+    if (previewBackgroundColor) {
       const tmp: RegExpExecArray | null = /<.*head.*>/i.exec(html)
 
       if (tmp && tmp[0]) {
         html = html.replace(
           tmp[0],
           `${tmp[0]}\n<style>
-            html, body { background-color: ${
-              workspace.getConfiguration('mjml').previewBackgroundColor
-            }; }
+            html, body { background-color: ${previewBackgroundColor}; }
           </style>`,
         )
       }
@@ -171,9 +159,9 @@ export default class Preview {
   }
 
   private addDocument(document: TextDocument): void {
-    if (this.openedDocuments.indexOf(document) === -1) {
-      this.openedDocuments.push(document)
-    }
+    if (this.openedDocuments.indexOf(document) !== -1) return
+
+    this.openedDocuments.push(document)
   }
 
   private removeDocument(fileName: string): void {

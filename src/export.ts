@@ -18,25 +18,23 @@ export default class Export {
       const defaultFileName: string = basename(getPath()).replace(/\.[^\.]+$/, '')
 
       let exportType: string = workspace.getConfiguration('mjml').exportType
+
       if (!exportType.startsWith('.')) {
         exportType = `.${exportType}`
       }
 
       if (workspace.getConfiguration('mjml').showSaveDialog) {
+        const defaultUri = Uri.file(
+          resolvePath(getPath(), `../${defaultFileName}${exportType}`),
+        )
+        const filters = { 'All files': ['*'], HTML: ['html'] }
+
         window
-          .showSaveDialog({
-            defaultUri: Uri.file(
-              resolvePath(getPath(), `../${defaultFileName}${exportType}`),
-            ),
-            filters: {
-              'All files': ['*'],
-              HTML: ['html'],
-            },
-          })
+          .showSaveDialog({ defaultUri, filters })
           .then((fileUri: Uri | undefined) => {
-            if (fileUri) {
-              this.writeFile(fileUri.fsPath, content)
-            }
+            if (!fileUri) return
+
+            this.writeFile(fileUri.fsPath, content)
           })
       } else {
         window
@@ -46,13 +44,8 @@ export default class Export {
             value: defaultFileName + exportType,
           })
           .then((fileName: string | undefined) => {
-            if (!fileName) {
-              return
-            }
-
-            if (!/[.]/.exec(fileName)) {
-              fileName += exportType
-            }
+            if (!fileName) return
+            if (!/[.]/.exec(fileName)) fileName += exportType
 
             if (fileName.startsWith('.')) {
               fileName = defaultFileName + fileName
