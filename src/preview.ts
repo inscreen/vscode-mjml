@@ -25,6 +25,8 @@ export default class Preview {
     this.subscriptions.push(
       commands.registerCommand('mjml.previewToSide', () => {
         if (window.activeTextEditor) {
+          if (this.openedDocuments.length) this.openedDocuments = []
+
           this.previewOpen = true
           this.displayWebView(window.activeTextEditor.document)
         } else {
@@ -88,8 +90,13 @@ export default class Preview {
     const activeTextEditor: TextEditor | undefined = window.activeTextEditor
     if (!activeTextEditor || !activeTextEditor.document) return
 
+    const { switchOnSeparateFileChange } = workspace.getConfiguration('mjml')
+    const originalFilename = this.openedDocuments[0].fileName.split(/.*\//)[1]
+    const newFilename = basename(activeTextEditor.document.fileName)
     const content: string = this.getContent(document)
-    const label = `MJML Preview - ${basename(activeTextEditor.document.fileName)}`
+    const label = `MJML Preview - ${
+      switchOnSeparateFileChange ? newFilename : originalFilename
+    }`
 
     if (!this.webview) {
       this.webview = window.createWebviewPanel('mjml-preview', label, ViewColumn.Two, {
