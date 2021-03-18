@@ -109,16 +109,20 @@ export function beautifyHTML(mjml: string): string | undefined {
 }
 
 export function getPath(): string {
-  if (window.activeTextEditor && window.activeTextEditor.document) {
-    return window.activeTextEditor.document.uri.fsPath
+  const { activeTextEditor } = window
+
+  if (activeTextEditor && activeTextEditor.document) {
+    return activeTextEditor.document.uri.fsPath
   }
 
   return ''
 }
 
 function getCWD(mjmlPath?: string): string {
-  if (workspace.rootPath) {
-    return workspace.rootPath
+  const { workspaceFolders } = workspace
+
+  if (workspaceFolders && workspaceFolders[0]) {
+    return workspaceFolders[0].uri.path
   }
 
   return mjmlPath ? parsePath(mjmlPath).dir : ''

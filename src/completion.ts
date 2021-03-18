@@ -6,49 +6,101 @@ import {
   MarkdownString,
   CompletionList,
   ProviderResult,
+  TextDocument,
+  Position,
 } from 'vscode'
-import attributes from './snippets/attributes'
-import cssProperties from './snippets/css'
+import { tagAttributes, cssProperties, htmlTags } from './snippets'
+
+interface Snippet {
+  prefix: string
+  body: string
+  description?: string
+}
+
+function createCompletionItem(snippet: Snippet, detail: string, kind?: number) {
+  const snippetCompletion = new CompletionItem(snippet.prefix)
+
+  snippetCompletion.detail = detail
+  snippetCompletion.documentation = new MarkdownString(snippet.description)
+  snippetCompletion.insertText = new SnippetString(snippet.body)
+  snippetCompletion.kind = kind
+
+  return snippetCompletion
+}
+
+function isWithinTags(
+  document: TextDocument,
+  position: Position,
+  regex: RegExp,
+): boolean {
+  const docText = document.getText()
+  const tagMatches = docText.match(regex)
+
+  if (!tagMatches) return false
+
+  const offset = document.offsetAt(position)
+
+  let isWithinOpeningTag = false
+  let isWithinClosingTag = false
+  let indexOfPos = 0
+
+  tagMatches.forEach((tag) => {
+    if (isWithinOpeningTag && isWithinClosingTag) return
+
+    const tagIndex = docText.indexOf(tag, indexOfPos)
+    const tagLength = tagIndex + tag.length
+    const isHTMLTag = tag[0] === '<'
+
+    indexOfPos = tagLength
+
+    if ((isHTMLTag && tag[1] !== '/') || tag === '{') {
+      isWithinOpeningTag = tagLength < offset
+    } else if (tag[1] === '/' || tag === '}') {
+      isWithinClosingTag = tagIndex > offset - 1
+    }
+  })
+
+  if (isWithinOpeningTag && isWithinClosingTag) return true
+  else return false
+}
+
+function isWithinOpeningTag(
+  document: TextDocument,
+  position: Position,
+  regex: RegExp,
+): boolean {
+  const docText = document.getText()
+  const tagMatches = docText.match(regex)
+
+  if (!tagMatches) return false
+
+  const cursorPos = document.offsetAt(position)
+  let isWithinOpeningTag = false
+  let indexOfPos = 0
+
+  tagMatches.forEach((tag) => {
+    const tagStart = docText.indexOf(tag, indexOfPos)
+    const tagEnd = tagStart + tag.length
+
+    indexOfPos = tagEnd
+
+    if (cursorPos > tagStart && cursorPos <= tagEnd) {
+      isWithinOpeningTag = true
+    }
+  })
+
+  return isWithinOpeningTag
+}
 
 export default class Completion {
   constructor(subscriptions: Disposable[]) {
     const attributeProvider = languages.registerCompletionItemProvider('mjml', {
       provideCompletionItems(document, position) {
-        const snippetCompletions: ProviderResult<CompletionItem[] | CompletionList> = []
-        const docText = document.getText()
         const tagRegex = /<[^/](?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/gm
-        const tagMatches = docText.match(tagRegex)
 
-        if (!tagMatches) return
+        if (!isWithinOpeningTag(document, position, tagRegex)) return
 
-        const cursorPos = document.offsetAt(position)
-        let isWithinTag = false
-        let indexOfPos = 0
-
-        tagMatches.forEach((tag) => {
-          const tagStart = docText.indexOf(tag, indexOfPos)
-          const tagEnd = tagStart + tag.length
-
-          indexOfPos = tagEnd
-
-          if (cursorPos > tagStart && cursorPos <= tagEnd) {
-            isWithinTag = true
-          }
-        })
-
-        if (!isWithinTag) return
-
-        attributes.forEach((attr) => {
-          const snippetCompletion = new CompletionItem(attr.prefix)
-
-          snippetCompletion.detail = 'MJML'
-          snippetCompletion.documentation = new MarkdownString(attr.description)
-          snippetCompletion.insertText = new SnippetString(attr.body)
-
-          snippetCompletions.push(snippetCompletion)
-        })
-
-        return snippetCompletions
+        return tagAttributes.map((attr) => createCompletionItem(attr, 'MJML'))
       },
     })
 
@@ -59,51 +111,22 @@ export default class Completion {
 
         if (lastLineChar === ';') return
 
-        const snippetCompletions: ProviderResult<CompletionItem[] | CompletionList> = []
-        const docText = document.getText()
-        const offset = document.offsetAt(position)
         const tagRegex = /<\/?mj-style(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*>/gm
-        const tagMatches = docText.match(tagRegex)
+        const bracketRegex = /{|}/gm
 
-        if (!tagMatches) return
+        if (!isWithinTags(document, position, tagRegex)) return
+        if (!isWithinTags(document, position, bracketRegex)) return
 
-        let isWithinOpeningTag = false
-        let isWithinClosingTag = false
-        let indexOfPos = 0
+        return cssProperties.map((prop) => {
+          const snippetCompletion = createCompletionItem(prop, 'MJML (CSS)')
 
-        if (tagMatches)
-          tagMatches.forEach((tag) => {
-            if (isWithinOpeningTag && isWithinClosingTag) return
-
-            const tagIndex = docText.indexOf(tag, indexOfPos)
-            const tagLength = tagIndex + tag.length
-
-            indexOfPos = tagLength
-
-            if (tag[1] !== '/') {
-              isWithinOpeningTag = tagLength < offset
-            } else if (tag[1] === '/') {
-              isWithinClosingTag = tagIndex > offset - 1
-            }
-          })
-
-        if (!isWithinOpeningTag || !isWithinClosingTag) return
-
-        cssProperties.forEach((prop) => {
-          const snippetCompletion = new CompletionItem(prop.prefix)
-
-          snippetCompletion.detail = 'MJML (CSS)'
-          snippetCompletion.documentation = new MarkdownString(prop.description)
-          snippetCompletion.insertText = new SnippetString(prop.body)
           snippetCompletion.command = {
             command: 'editor.action.triggerSuggest',
             title: '',
           }
 
-          snippetCompletions.push(snippetCompletion)
+          return snippetCompletion
         })
-
-        return snippetCompletions
       },
     })
 
@@ -117,12 +140,9 @@ export default class Completion {
           if (!document.lineAt(position).text.includes(formattedBody)) return
 
           prop.values.forEach((val) => {
-            const snippetCompletion = new CompletionItem(val)
-
-            snippetCompletion.insertText = new SnippetString(val)
-            snippetCompletion.kind = 11 // 11 = Value
-
-            snippetCompletions.push(snippetCompletion)
+            snippetCompletions.push(
+              createCompletionItem({ prefix: val, body: val }, '', 11),
+            )
           })
         })
 
@@ -130,6 +150,23 @@ export default class Completion {
       },
     })
 
-    subscriptions.push(attributeProvider, cssPropertyProvider, cssValueProvider)
+    const htmlTagProvider = languages.registerCompletionItemProvider('mjml', {
+      provideCompletionItems(document, position) {
+        const mjTextRegex = /<\/?mj-text(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*>/gm
+        const htmlTagRegex = /<\/?[^/?mj\-.*](?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*>/gm
+
+        if (!isWithinTags(document, position, mjTextRegex)) return
+        if (isWithinOpeningTag(document, position, htmlTagRegex)) return
+
+        return htmlTags.map((tag) => createCompletionItem(tag, 'MJML (HTML)'))
+      },
+    })
+
+    subscriptions.push(
+      attributeProvider,
+      cssPropertyProvider,
+      cssValueProvider,
+      htmlTagProvider,
+    )
   }
 }

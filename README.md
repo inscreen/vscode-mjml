@@ -9,15 +9,17 @@ This is a fork of the [@mjmlio extension](https://github.com/mjmlio/vscode-mjml)
 - `mjml.switchOnSeparateFileChange`: optionally restrict preview to original file used to open it, reflects external updates.
 - Attribute auto-completion within tags.
 - CSS property/value completion within `mj-style` tags.
+- HTML tag completion within `mj-text` tags.
+- Updated dependencies.
 
 ### Removals:
 
-- No template feature.
-- No screenshot feature.
-- No email sending feature.
-- No documentation feature.
-- No migration feature.
-- No `mj-link` snippet as it's deprecated.
+- Template feature.
+- Screenshot feature.
+- Email sending feature.
+- Documentation feature.
+- Migration feature.
+- `mj-link` snippet as it's deprecated.
 
 The reason for removing these features is they take up a massive chunk of the overall extension size (over 70mb of a roughly 80mb package).
 

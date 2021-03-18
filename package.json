@@ -192,9 +192,13 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "tsc -p ./",
-    "compile": "tsc -watch -p ./",
-    "lint": "npx eslint . --ext .js,.ts"
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "npx eslint . --ext .js,.ts",
+    "checks": "npm run lint && npm run compile",
+    "publish-patch": "npm run checks && vsce publish patch",
+    "publish-minor": "npm run checks && vsce publish minor",
+    "publish-major": "npm run checks && vsce publish major"
   },
   "devDependencies": {
     "@types/copy-paste": "^1.1.30",
