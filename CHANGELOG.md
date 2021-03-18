@@ -3,6 +3,10 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [1.2.2] (2021-03-18)
+
+Initial preview open bug fix.
+
 ### [1.2.0] (2021-03-18)
 
 HTML tag completions within `mj-text` tags, minor bug fixes.

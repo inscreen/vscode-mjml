@@ -91,11 +91,12 @@ export default class Preview {
     if (!activeTextEditor || !activeTextEditor.document) return
 
     const { switchOnSeparateFileChange } = workspace.getConfiguration('mjml')
-    const originalFilename = this.openedDocuments[0].fileName.split(/.*\//)[1]
+    const originalFilename =
+      this.openedDocuments[0] && this.openedDocuments[0].fileName.split(/.*\//)[1]
     const newFilename = basename(activeTextEditor.document.fileName)
     const content: string = this.getContent(document)
     const label = `MJML Preview - ${
-      switchOnSeparateFileChange ? newFilename : originalFilename
+      switchOnSeparateFileChange ? newFilename : originalFilename || newFilename
     }`
 
     if (!this.webview) {
