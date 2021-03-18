@@ -15,6 +15,11 @@ export default [
     description: 'background-color attribute: `background-color=""`',
   },
   {
+    prefix: 'border',
+    body: 'border="$1"',
+    description: 'border attribute: `border=""`',
+  },
+  {
     prefix: 'border-radius',
     body: 'border-radius="$1"',
     description: 'border-radius attribute: `border-radius=""`',
