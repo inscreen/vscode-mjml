@@ -3,6 +3,10 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [1.2.4] (2021-03-20)
+
+Removed unnecessary whitespace in some HTML snippets.
+
 ### [1.2.3] (2021-03-18)
 
 Added missing `border` attribute.

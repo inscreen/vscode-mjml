@@ -16,12 +16,12 @@ export default [
   },
   {
     prefix: 'article',
-    body: '<article>\t$1</article>',
+    body: '<article>$1</article>',
     description: 'Tag: `<article></article>`',
   },
   {
     prefix: 'aside',
-    body: '<aside>\t$1</aside>$2',
+    body: '<aside>$1</aside>$2',
     description: 'Tag: `<aside></aside>`',
   },
   {
@@ -31,7 +31,7 @@ export default [
   },
   {
     prefix: 'blockquote',
-    body: '<blockquote cite="$2">\t$1</blockquote>',
+    body: '<blockquote cite="$2">$1</blockquote>',
     description: 'Tag: `<blockquote cite=""></blockquote>`',
   },
   {
@@ -66,12 +66,12 @@ export default [
   },
   {
     prefix: 'colgroup',
-    body: '<colgroup>\t$1</colgroup>',
+    body: '<colgroup>$1</colgroup>',
     description: 'Tag: `<colgroup></colgroup>`',
   },
   {
     prefix: 'datalist',
-    body: '<datalist>\t$1</datalist>',
+    body: '<datalist>$1</datalist>',
     description: 'Tag: `<datalist></datalist>`',
   },
   {
@@ -86,7 +86,7 @@ export default [
   },
   {
     prefix: 'details',
-    body: '<details>\t$1</details>',
+    body: '<details>$1</details>',
     description: 'Tag: `<details></details>`',
   },
   {
@@ -101,12 +101,12 @@ export default [
   },
   {
     prefix: 'div',
-    body: '<div>\t$1</div>',
+    body: '<div>$1</div>',
     description: 'Tag: `<div></div>`',
   },
   {
     prefix: 'dl',
-    body: '<dl>\t$1</dl>',
+    body: '<dl>$1</dl>',
     description: 'Tag: `<dl></dl>`',
   },
   {
@@ -121,7 +121,7 @@ export default [
   },
   {
     prefix: 'fieldset',
-    body: '<fieldset>\t$1</fieldset>',
+    body: '<fieldset>$1</fieldset>',
     description: 'Tag: `<fieldset></fieldset>`',
   },
   {
@@ -131,17 +131,17 @@ export default [
   },
   {
     prefix: 'figure',
-    body: '<figure>\t$1</figure>',
+    body: '<figure>$1</figure>',
     description: 'Tag: `<figure></figure>`',
   },
   {
     prefix: 'footer',
-    body: '<footer>\t$1</footer>',
+    body: '<footer>$1</footer>',
     description: 'Tag: `<footer></footer>`',
   },
   {
     prefix: 'form',
-    body: '<form>\t$1</form>',
+    body: '<form>$1</form>',
     description: 'Tag: `<form></form>`',
   },
   {
@@ -176,7 +176,7 @@ export default [
   },
   {
     prefix: 'header',
-    body: '<header>\t$1</header>',
+    body: '<header>$1</header>',
     description: 'Tag: `<header></header>`',
   },
   {
@@ -221,12 +221,12 @@ export default [
   },
   {
     prefix: 'main',
-    body: '<main>\t$1</main>',
+    body: '<main>$1</main>',
     description: 'Tag: `<main></main>`',
   },
   {
     prefix: 'map',
-    body: '<map name="$1">\t$2</map>',
+    body: '<map name="$1">$2</map>',
     description: 'Tag: `<map name=""></map>`',
   },
   {
@@ -236,7 +236,7 @@ export default [
   },
   {
     prefix: 'menu',
-    body: '<menu>\t$1</menu>',
+    body: '<menu>$1</menu>',
     description: 'Tag: `<menu></menu>`',
   },
   {
@@ -246,7 +246,7 @@ export default [
   },
   {
     prefix: 'nav',
-    body: '<nav>\t$1</nav>',
+    body: '<nav>$1</nav>',
     description: 'Tag: `<nav></nav>`',
   },
   {
@@ -256,12 +256,12 @@ export default [
   },
   {
     prefix: 'ol',
-    body: '<ol>\t$1</ol>',
+    body: '<ol>$1</ol>',
     description: 'Tag: `<ol></ol>`',
   },
   {
     prefix: 'optgroup',
-    body: '<optgroup>\t$1</optgroup>',
+    body: '<optgroup>$1</optgroup>',
     description: 'Tag: `<optgroup></optgroup>`',
   },
   {
@@ -291,12 +291,12 @@ export default [
   },
   {
     prefix: 'section',
-    body: '<section>\t$1</section>',
+    body: '<section>$1</section>',
     description: 'Tag: `<section></section>`',
   },
   {
     prefix: 'select',
-    body: '<select>\t$1</select>',
+    body: '<select>$1</select>',
     description: 'Tag: `<select></select>`',
   },
   {
@@ -326,12 +326,12 @@ export default [
   },
   {
     prefix: 'table',
-    body: '<table>\t$1</table>',
+    body: '<table>$1</table>',
     description: 'Tag: `<table></table>`',
   },
   {
     prefix: 'tbody',
-    body: '<tbody>\t$1</tbody>',
+    body: '<tbody>$1</tbody>',
     description: 'Tag: `<tbody></tbody>`',
   },
   {
@@ -346,7 +346,7 @@ export default [
   },
   {
     prefix: 'tfoot',
-    body: '<tfoot>\t$1</tfoot>',
+    body: '<tfoot>$1</tfoot>',
     description: 'Tag: `<tfoot></tfoot>`',
   },
   {
@@ -371,7 +371,7 @@ export default [
   },
   {
     prefix: 'ul',
-    body: '<ul>\t$1</ul>',
+    body: '<ul>$1</ul>',
     description: 'Tag: `<ul></ul>`',
   },
 ]
