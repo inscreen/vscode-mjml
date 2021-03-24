@@ -3,9 +3,13 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [1.4.1] (2021-03-24)
+
+Fixed catastrophic backtracking in `mj-head-render` regex.
+
 ### [1.4.0] (2021-03-24)
 
-Added `<!-- mjml-head -->` magic comment to render head elements inside previewer when using `<!-- mjml-render -->`.
+Added `<!-- mj-head-render -->` magic comment to render head elements inside previewer when using `<!-- mjml-render -->`.
 
 ### [1.3.1] (2021-03-24)
 
