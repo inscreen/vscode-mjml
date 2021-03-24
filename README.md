@@ -12,6 +12,7 @@ This is a fork of the [@mjmlio extension](https://github.com/mjmlio/vscode-mjml)
 - HTML tag completion within `mj-text` tags.
 - Updated dependencies.
 - `<!-- mjml-render -->`: add this comment anywhere in a file **that doesn't already have an `<mjml>` tag** to enable previewing.
+- `<!-- mj-head-render ... -->`: wraps `...` in `mj-head` tags which are only rendered when previewing with `mjml-render`.
 
 ### Removals:
 

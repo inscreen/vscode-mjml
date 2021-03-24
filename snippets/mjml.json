@@ -223,5 +223,11 @@
     "body": "<!-- mjml-render -->",
     "description": "Magic comment to enable component previewing",
     "scope": "source.mjml"
+  },
+  "mj-head-render": {
+    "prefix": "mjhead-render",
+    "body": ["<!-- mj-head-render", "$1", "-->"],
+    "description": "Magic comment to enable head elements when used in conjunction with `<!-- mjml-render -->`",
+    "scope": "source.mjml"
   }
 }
