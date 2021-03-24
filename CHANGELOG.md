@@ -3,6 +3,10 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [1.3.1] (2021-03-24)
+
+Added `<!-- mjml-render -->` snippet.
+
 ### [1.3.0] (2021-03-24)
 
 Added ability to preview individual components with `<!-- mjml-render -->` magic comment. Inspired by [this merge request in the official extension repo](https://github.com/mjmlio/vscode-mjml/pull/18).

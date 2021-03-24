@@ -217,5 +217,11 @@
     ],
     "description": "Basic MJML Template",
     "scope": "source.mjml"
+  },
+  "mjml-render": {
+    "prefix": "mjml-render",
+    "body": "<!-- mjml-render -->",
+    "description": "Magic comment to enable component previewing",
+    "scope": "source.mjml"
   }
 }
