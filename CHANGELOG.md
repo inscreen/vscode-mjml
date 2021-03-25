@@ -3,6 +3,10 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [1.4.2] (2021-03-25)
+
+Fixed hyphens messing with completion provider, check if semi-colon already exists before completing CSS properties.
+
 ### [1.4.1] (2021-03-24)
 
 Fixed catastrophic backtracking in `mj-head-render` regex.
