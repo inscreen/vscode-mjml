@@ -3,6 +3,10 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [1.4.3] (2021-04-17)
+
+Fixed CSS property/value completion bugs when there are multiple properties per line.
+
 ### [1.4.2] (2021-03-25)
 
 Fixed hyphens messing with completion provider, check if semi-colon already exists before completing CSS properties.

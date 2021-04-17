@@ -92,18 +92,21 @@ function isWithinOpeningTag(
   return isWithinOpeningTag
 }
 
-function hasExistingHyphen(lineText: string, body: string): string {
-  const hyphenSections = lineText.match(/[^\s]*-/g)
+function hasExistingHyphen(
+  document: TextDocument,
+  position: Position,
+  body: string,
+): string {
+  const range = document.getWordRangeAtPosition(position, /(?:\w|-)+\w*/)
+  const typedText = document.getText(range)
 
-  if (!hyphenSections) return body
+  if (!typedText || !range) return body
 
-  for (let i = 0; i < hyphenSections.length; i++) {
-    const section = hyphenSections[i]
-    const matchingLengthBody = body.slice(0, section.length)
+  const typedTextAtLastHyphen = typedText.slice(0, typedText.lastIndexOf('-') + 1)
+  const matchingLengthBody = body.slice(0, typedText.lastIndexOf('-') + 1)
 
-    if (section === matchingLengthBody) {
-      return body.split(section)[1]
-    }
+  if (typedTextAtLastHyphen === matchingLengthBody) {
+    return body.slice(typedText.lastIndexOf('-') + 1)
   }
 
   return body
@@ -117,12 +120,10 @@ export default class Completion {
 
         if (!isWithinOpeningTag(document, position, tagRegex)) return
 
-        const { text: lineText } = document.lineAt(position)
-
         return tagAttributes.map((attr) => {
           const attrCopy = { ...attr }
 
-          attrCopy.body = hasExistingHyphen(lineText, attr.body)
+          attrCopy.body = hasExistingHyphen(document, position, attr.body)
 
           return createCompletionItem(attrCopy, 'MJML')
         })
@@ -145,7 +146,7 @@ export default class Completion {
         return cssProperties.map((prop) => {
           const propCopy = { ...prop }
 
-          propCopy.body = hasExistingHyphen(lineText, prop.body)
+          propCopy.body = hasExistingHyphen(document, position, prop.body)
 
           const snippetCompletion = createCompletionItem(propCopy, 'MJML (CSS)')
 
@@ -162,17 +163,21 @@ export default class Completion {
     const cssValueProvider = languages.registerCompletionItemProvider('mjml', {
       provideCompletionItems(document, position) {
         const snippetCompletions: ProviderResult<CompletionItem[] | CompletionList> = []
-        const { text: lineText } = document.lineAt(position)
-        const addSemi = !lineText.includes(';')
+        const range = document.getWordRangeAtPosition(position, /(?:\w|-)*:\s[^;]*;/)
+
+        if (!range) return
+
+        const typedText = document.getText(range)
+        const addSemi = !typedText.includes(';')
 
         cssProperties.forEach((prop) => {
-          const bodyRegex = new RegExp(prop.body.split('$1').join('.*') + '?')
+          const bodyRegex = new RegExp(`(?<!-)${prop.body.split('$1').join('[^;]*')}?`)
 
-          if (!bodyRegex.test(lineText)) return
+          if (!bodyRegex.test(typedText)) return
 
           prop.values.forEach((val) => {
             const propBody = addSemi ? val + ';' : val
-            const body = hasExistingHyphen(lineText, propBody)
+            const body = hasExistingHyphen(document, position, propBody)
             const completionItem = createCompletionItem({ prefix: val, body }, '', 11)
 
             snippetCompletions.push(completionItem)
