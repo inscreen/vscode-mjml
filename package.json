@@ -41,11 +41,6 @@
     "vscode": "^1.54.0"
   },
   "activationEvents": [
-    "onCommand:mjml.beautify",
-    "onCommand:mjml.copyHTML",
-    "onCommand:mjml.exportHTML",
-    "onCommand:mjml.previewToSide",
-    "onCommand:mjml.version",
     "onLanguage:mjml"
   ],
   "main": "./out/extension",
@@ -196,9 +191,9 @@
     "watch": "tsc -watch -p ./",
     "lint": "npx eslint . --ext .js,.ts",
     "checks": "npm run lint && npm run compile",
-    "publish-patch": "npm run checks && vsce publish patch",
-    "publish-minor": "npm run checks && vsce publish minor",
-    "publish-major": "npm run checks && vsce publish major"
+    "pub": "npm run checks && vsce publish patch",
+    "pub-minor": "npm run checks && vsce publish minor",
+    "pub-major": "npm run checks && vsce publish major"
   },
   "devDependencies": {
     "@types/copy-paste": "^1.1.30",
