@@ -92,26 +92,6 @@ function isWithinOpeningTag(
   return isWithinOpeningTag
 }
 
-function hasExistingHyphen(
-  document: TextDocument,
-  position: Position,
-  body: string,
-): string {
-  const range = document.getWordRangeAtPosition(position, /(?:\w|-)+\w*/)
-  const typedText = document.getText(range)
-
-  if (!typedText || !range) return body
-
-  const typedTextAtLastHyphen = typedText.slice(0, typedText.lastIndexOf('-') + 1)
-  const matchingLengthBody = body.slice(0, typedText.lastIndexOf('-') + 1)
-
-  if (typedTextAtLastHyphen === matchingLengthBody) {
-    return body.slice(typedText.lastIndexOf('-') + 1)
-  }
-
-  return body
-}
-
 export default class Completion {
   constructor(subscriptions: Disposable[]) {
     const attributeProvider = languages.registerCompletionItemProvider('mjml', {
@@ -122,8 +102,6 @@ export default class Completion {
 
         return tagAttributes.map((attr) => {
           const attrCopy = { ...attr }
-
-          attrCopy.body = hasExistingHyphen(document, position, attr.body)
 
           return createCompletionItem(attrCopy, 'MJML')
         })
@@ -145,9 +123,6 @@ export default class Completion {
 
         return cssProperties.map((prop) => {
           const propCopy = { ...prop }
-
-          propCopy.body = hasExistingHyphen(document, position, prop.body)
-
           const snippetCompletion = createCompletionItem(propCopy, 'MJML (CSS)')
 
           snippetCompletion.command = {
@@ -176,8 +151,7 @@ export default class Completion {
           if (!bodyRegex.test(typedText)) return
 
           prop.values.forEach((val) => {
-            const propBody = addSemi ? val + ';' : val
-            const body = hasExistingHyphen(document, position, propBody)
+            const body = addSemi ? val + ';' : val
             const completionItem = createCompletionItem({ prefix: val, body }, '', 11)
 
             snippetCompletions.push(completionItem)

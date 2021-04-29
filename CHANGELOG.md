@@ -3,6 +3,10 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [1.5.1] (2021-04-29)
+
+Remove unnecessary completion item hyphen handling.
+
 ### [1.5.0] (2021-04-28)
 
 Added indentation rules.
