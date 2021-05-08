@@ -49,13 +49,19 @@ export default class Completion {
   }
 
   private attributeProvider(document: TextDocument, position: Position) {
-    if (!isWithinRegex(document, position, regex.openingTag)) return
-
-    return tagAttributes.map((attr) => {
+    const completionItems = tagAttributes.map((attr) => {
       const attrCopy = { ...attr }
+
+      const { openingTag } = regex.dynamicPatterns
+      const tagNames = `${attr.noMjClass ? '' : 'mj-class|'}${attr.els.join('|')}`
+      const formattedRegex = new RegExp(openingTag.start + tagNames + openingTag.end, 'g')
+
+      if (!isWithinRegex(document, position, formattedRegex)) return
 
       return createCompletionItem(attrCopy, 'MJML')
     })
+
+    return completionItems.filter((item) => item !== undefined) as CompletionItem[]
   }
 
   private cssPropertyProvider(document: TextDocument, position: Position) {
