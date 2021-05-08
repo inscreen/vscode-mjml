@@ -6,10 +6,12 @@ import {
   MarkdownString,
   CompletionList,
   ProviderResult,
-  TextDocument,
   Position,
+  TextDocument,
 } from 'vscode'
 import { tagAttributes, cssProperties, htmlTags } from './snippets'
+import { isWithinRegex } from './utils'
+import regex from './resources/regex'
 
 interface Snippet {
   prefix: string
@@ -28,157 +30,86 @@ function createCompletionItem(snippet: Snippet, detail: string, kind?: number) {
   return snippetCompletion
 }
 
-function isWithinTags(
-  document: TextDocument,
-  position: Position,
-  regex: RegExp,
-): boolean {
-  const docText = document.getText()
-  const tagMatches = docText.match(regex)
-
-  if (!tagMatches) return false
-
-  const offset = document.offsetAt(position)
-
-  let isWithinOpeningTag = false
-  let isWithinClosingTag = false
-  let indexOfPos = 0
-
-  tagMatches.forEach((tag) => {
-    if (isWithinOpeningTag && isWithinClosingTag) return
-
-    const tagIndex = docText.indexOf(tag, indexOfPos)
-    const tagLength = tagIndex + tag.length
-    const isHTMLTag = tag[0] === '<'
-
-    indexOfPos = tagLength
-
-    if ((isHTMLTag && tag[1] !== '/') || tag === '{') {
-      isWithinOpeningTag = tagLength < offset
-    } else if (tag[1] === '/' || tag === '}') {
-      isWithinClosingTag = tagIndex > offset - 1
-    }
-  })
-
-  if (isWithinOpeningTag && isWithinClosingTag) return true
-  else return false
-}
-
-function isWithinOpeningTag(
-  document: TextDocument,
-  position: Position,
-  regex: RegExp,
-): boolean {
-  const docText = document.getText()
-  const tagMatches = docText.match(regex)
-
-  if (!tagMatches) return false
-
-  const cursorPos = document.offsetAt(position)
-  let isWithinOpeningTag = false
-  let indexOfPos = 0
-
-  tagMatches.forEach((tag) => {
-    const tagStart = docText.indexOf(tag, indexOfPos)
-    const tagEnd = tagStart + tag.length
-
-    indexOfPos = tagEnd
-
-    if (cursorPos > tagStart && cursorPos <= tagEnd) {
-      isWithinOpeningTag = true
-    }
-  })
-
-  return isWithinOpeningTag
-}
-
 export default class Completion {
   constructor(subscriptions: Disposable[]) {
-    const attributeProvider = languages.registerCompletionItemProvider('mjml', {
-      provideCompletionItems(document, position) {
-        const tagRegex = /<[^/](?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/gm
+    const providers = [
+      this.attributeProvider,
+      this.cssPropertyProvider,
+      this.cssValueProvider,
+      this.htmlTagProvider,
+    ]
 
-        if (!isWithinOpeningTag(document, position, tagRegex)) return
-
-        return tagAttributes.map((attr) => {
-          const attrCopy = { ...attr }
-
-          return createCompletionItem(attrCopy, 'MJML')
-        })
-      },
+    const disposables = providers.map((provider) => {
+      return languages.registerCompletionItemProvider('mjml', {
+        provideCompletionItems: provider,
+      })
     })
 
-    const cssPropertyProvider = languages.registerCompletionItemProvider('mjml', {
-      provideCompletionItems(document, position) {
-        const { text: lineText } = document.lineAt(position)
-        const lastLineChar = lineText[position.character]
+    subscriptions.push(...disposables)
+  }
 
-        if (lastLineChar === ';') return
+  private attributeProvider(document: TextDocument, position: Position) {
+    if (!isWithinRegex(document, position, regex.openingTag)) return
 
-        const tagRegex = /<\/?mj-style(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*>/gm
-        const bracketRegex = /{|}/gm
+    return tagAttributes.map((attr) => {
+      const attrCopy = { ...attr }
 
-        if (!isWithinTags(document, position, tagRegex)) return
-        if (!isWithinTags(document, position, bracketRegex)) return
+      return createCompletionItem(attrCopy, 'MJML')
+    })
+  }
 
-        return cssProperties.map((prop) => {
-          const propCopy = { ...prop }
-          const snippetCompletion = createCompletionItem(propCopy, 'MJML (CSS)')
+  private cssPropertyProvider(document: TextDocument, position: Position) {
+    const { text: lineText } = document.lineAt(position)
+    const lastLineChar = lineText[position.character]
 
-          snippetCompletion.command = {
-            command: 'editor.action.triggerSuggest',
-            title: '',
-          }
+    if (lastLineChar === ';') return
 
-          return snippetCompletion
-        })
-      },
+    if (!isWithinRegex(document, position, regex.mjStyleBlock)) return
+    if (!isWithinRegex(document, position, regex.curlyBrackets)) return
+    if (isWithinRegex(document, position, regex.cssValue)) return
+
+    return cssProperties.map((prop) => {
+      const propCopy = { ...prop }
+      const snippetCompletion = createCompletionItem(propCopy, 'MJML (CSS)')
+
+      snippetCompletion.command = {
+        command: 'editor.action.triggerSuggest',
+        title: '',
+      }
+
+      return snippetCompletion
+    })
+  }
+
+  private cssValueProvider(document: TextDocument, position: Position) {
+    const snippetCompletions: ProviderResult<CompletionItem[] | CompletionList> = []
+    const range = document.getWordRangeAtPosition(position, regex.cssPropertyValue)
+
+    if (!range) return
+
+    const typedText = document.getText(range)
+    const addSemi = !typedText.includes(';')
+
+    cssProperties.forEach((prop) => {
+      const bodyRegex = new RegExp(`(?<!-)${prop.body.split('$1').join('[^;]*')}?`)
+
+      if (!bodyRegex.test(typedText)) return
+
+      prop.values.forEach((val) => {
+        const body = addSemi ? val + ';' : val
+        const completionItem = createCompletionItem({ prefix: val, body }, '', 11)
+
+        snippetCompletions.push(completionItem)
+      })
     })
 
-    const cssValueProvider = languages.registerCompletionItemProvider('mjml', {
-      provideCompletionItems(document, position) {
-        const snippetCompletions: ProviderResult<CompletionItem[] | CompletionList> = []
-        const range = document.getWordRangeAtPosition(position, /(?:\w|-)*:\s[^;]*;/)
+    return snippetCompletions
+  }
 
-        if (!range) return
+  private htmlTagProvider(document: TextDocument, position: Position) {
+    if (!isWithinRegex(document, position, regex.mjTextBlock)) return
+    if (isWithinRegex(document, position, regex.anyTag)) return
 
-        const typedText = document.getText(range)
-        const addSemi = !typedText.includes(';')
-
-        cssProperties.forEach((prop) => {
-          const bodyRegex = new RegExp(`(?<!-)${prop.body.split('$1').join('[^;]*')}?`)
-
-          if (!bodyRegex.test(typedText)) return
-
-          prop.values.forEach((val) => {
-            const body = addSemi ? val + ';' : val
-            const completionItem = createCompletionItem({ prefix: val, body }, '', 11)
-
-            snippetCompletions.push(completionItem)
-          })
-        })
-
-        return snippetCompletions
-      },
-    })
-
-    const htmlTagProvider = languages.registerCompletionItemProvider('mjml', {
-      provideCompletionItems(document, position) {
-        const mjTextRegex = /<\/?mj-text(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*>/gm
-        const htmlTagRegex = /<\/?[^/?mj\-.*](?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*>/gm
-
-        if (!isWithinTags(document, position, mjTextRegex)) return
-        if (isWithinOpeningTag(document, position, htmlTagRegex)) return
-
-        return htmlTags.map((tag) => createCompletionItem(tag, 'MJML (HTML)'))
-      },
-    })
-
-    subscriptions.push(
-      attributeProvider,
-      cssPropertyProvider,
-      cssValueProvider,
-      htmlTagProvider,
-    )
+    return htmlTags.map((tag) => createCompletionItem(tag, 'MJML (HTML)'))
   }
 }

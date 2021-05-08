@@ -7,6 +7,7 @@ import Linter from './linter'
 import Preview from './preview'
 import Version from './version'
 import Completion from './completion'
+import Color from './color'
 import LanguageConfig from './language'
 
 export function activate(context: ExtensionContext): void {
@@ -17,5 +18,6 @@ export function activate(context: ExtensionContext): void {
   new Preview(context)
   new Version(context.subscriptions)
   new Completion(context.subscriptions)
+  new Color(context.subscriptions)
   new LanguageConfig(context.subscriptions)
 }
