@@ -452,6 +452,12 @@ export default [
     description: 'CSS opacity property: `opacity: ;`',
   },
   {
+    prefix: 'padding',
+    body: 'padding: $1;',
+    values: ['$1px', 'initial', 'inherit'],
+    description: 'CSS padding property: `padding: ;`',
+  },
+  {
     prefix: 'padding-bottom',
     body: 'padding-bottom: $1;',
     values: ['$1px', 'initial', 'inherit'],
