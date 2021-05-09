@@ -51,7 +51,7 @@ export default class ColorProvider {
       const endIndex = index + match[0].length
       const startPos = positionAt(index)
       const isWithinCssValue =
-        isWithinRegex(document, startPos, regex.mjStyleBlock) &&
+        isWithinRegex(document, startPos, regex.styleBlock) &&
         isWithinRegex(document, startPos, regex.curlyBrackets) &&
         isWithinRegex(document, startPos, regex.cssValue)
       const isWithinColorAttr = isWithinRegex(document, startPos, regex.colorAttr)

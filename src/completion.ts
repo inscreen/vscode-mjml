@@ -71,7 +71,7 @@ export default class Completion {
 
     if (lastLineChar === ';') return
 
-    if (!isWithinRegex(document, position, regex.mjStyleBlock)) return
+    if (!isWithinRegex(document, position, regex.styleBlock)) return
     if (!isWithinRegex(document, position, regex.curlyBrackets)) return
     if (isWithinRegex(document, position, regex.cssValue)) return
 
@@ -114,7 +114,7 @@ export default class Completion {
   }
 
   private htmlTagProvider(document: TextDocument, position: Position) {
-    if (!isWithinRegex(document, position, regex.mjTextBlock)) return
+    if (!isWithinRegex(document, position, regex.htmlBlock)) return
     if (isWithinRegex(document, position, regex.anyTag)) return
 
     return htmlTags.map((tag) => createCompletionItem(tag, 'MJML (HTML)'))
@@ -122,8 +122,8 @@ export default class Completion {
 
   private mjmlSnippetProvider(document: TextDocument, position: Position) {
     if (isWithinRegex(document, position, regex.anyTag)) return
-    if (isWithinRegex(document, position, regex.mjStyleBlock)) return
-    if (isWithinRegex(document, position, regex.mjTextBlock)) return
+    if (isWithinRegex(document, position, regex.styleBlock)) return
+    if (isWithinRegex(document, position, regex.htmlBlock)) return
 
     return mjmlSnippets.map((tag) => createCompletionItem(tag, 'MJML (Snippet)', 14))
   }
