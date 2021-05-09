@@ -1,4 +1,4 @@
-import { ExtensionContext } from 'vscode'
+import { ExtensionContext, workspace } from 'vscode'
 
 import Beautify from './beautify'
 import Copy from './copy'
@@ -9,6 +9,14 @@ import Version from './version'
 import Completion from './completion'
 import Color from './color'
 import LanguageConfig from './language'
+
+export let workspaceConfig = workspace.getConfiguration('mjml')
+
+workspace.onDidChangeConfiguration((e) => {
+  if (!e.affectsConfiguration('mjml')) return
+
+  workspaceConfig = workspace.getConfiguration('mjml')
+})
 
 export function activate(context: ExtensionContext): void {
   new Beautify(context.subscriptions)

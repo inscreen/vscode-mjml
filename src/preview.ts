@@ -1,4 +1,3 @@
-import { basename } from 'path'
 import {
   commands,
   Disposable,
@@ -11,7 +10,10 @@ import {
   window,
   workspace,
 } from 'vscode'
+import { basename } from 'path'
+
 import { fixImages, isMJMLFile, mjmlToHtml } from './helper'
+import { workspaceConfig } from './extension'
 
 export default class Preview {
   private openedDocuments: TextDocument[] = []
@@ -35,7 +37,7 @@ export default class Preview {
       }),
 
       workspace.onDidOpenTextDocument((document?: TextDocument) => {
-        const { autoPreview } = workspace.getConfiguration('mjml')
+        const { autoPreview } = workspaceConfig
 
         if (!document || !this.previewOpen || !autoPreview) return
 
@@ -43,7 +45,7 @@ export default class Preview {
       }),
 
       window.onDidChangeActiveTextEditor((editor?: TextEditor) => {
-        const { autoPreview } = workspace.getConfiguration('mjml')
+        const { autoPreview } = workspaceConfig
 
         if (!editor || !this.previewOpen || !autoPreview) return
 
@@ -51,7 +53,7 @@ export default class Preview {
       }),
 
       workspace.onDidChangeTextDocument((event?: TextDocumentChangeEvent) => {
-        const { updateWhenTyping } = workspace.getConfiguration('mjml')
+        const { updateWhenTyping } = workspaceConfig
 
         if (!event || !this.previewOpen || !updateWhenTyping) return
 
@@ -69,9 +71,9 @@ export default class Preview {
 
         this.removeDocument(document.fileName)
 
-        const { autoClosePreview } = workspace.getConfiguration('mjml')
+        const { autoClosePreview } = workspaceConfig
 
-        if (this.openedDocuments.length !== 0 || autoClosePreview) return
+        if (this.openedDocuments.length !== 0 || !autoClosePreview) return
 
         this.dispose()
       }),
@@ -90,7 +92,7 @@ export default class Preview {
     const activeTextEditor: TextEditor | undefined = window.activeTextEditor
     if (!activeTextEditor || !activeTextEditor.document) return
 
-    const { switchOnSeparateFileChange } = workspace.getConfiguration('mjml')
+    const { switchOnSeparateFileChange, preserveFocus } = workspaceConfig
     const originalFilename =
       this.openedDocuments[0] && this.openedDocuments[0].fileName.split(/.*\//)[1]
     const newFilename = basename(activeTextEditor.document.fileName)
@@ -100,9 +102,12 @@ export default class Preview {
     }`
 
     if (!this.webview) {
-      this.webview = window.createWebviewPanel('mjml-preview', label, ViewColumn.Two, {
-        retainContextWhenHidden: true,
-      })
+      this.webview = window.createWebviewPanel(
+        'mjml-preview',
+        label,
+        { viewColumn: ViewColumn.Two, preserveFocus },
+        { retainContextWhenHidden: true },
+      )
 
       this.webview.webview.html = content
 
@@ -114,11 +119,6 @@ export default class Preview {
         null,
         this.subscriptions,
       )
-
-      if (workspace.getConfiguration('mjml').preserveFocus) {
-        // Preserve focus of Text Editor after preview open
-        window.showTextDocument(activeTextEditor.document, ViewColumn.One)
-      }
     } else {
       this.webview.title = label
       this.webview.webview.html = content
@@ -126,7 +126,7 @@ export default class Preview {
   }
 
   private getContent(document: TextDocument): string {
-    if (!workspace.getConfiguration('mjml').switchOnSeparateFileChange) {
+    if (!workspaceConfig.switchOnSeparateFileChange) {
       document = this.openedDocuments[0] || document
     }
 
@@ -156,7 +156,7 @@ export default class Preview {
   }
 
   private setBackgroundColor(html: string): string {
-    const { previewBackgroundColor } = workspace.getConfiguration('mjml')
+    const { previewBackgroundColor } = workspaceConfig
 
     if (previewBackgroundColor) {
       const tmp: RegExpExecArray | null = /<.*head.*>/i.exec(html)

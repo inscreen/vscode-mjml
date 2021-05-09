@@ -13,13 +13,14 @@ import {
   workspace,
 } from 'vscode'
 
+import { workspaceConfig } from './extension'
 import { getPath, mjmlToHtml } from './helper'
 
 export default class Linter {
   private diagnosticCollection!: DiagnosticCollection
 
   constructor(subscriptions: Disposable[]) {
-    if (!workspace.getConfiguration('mjml').lintEnable) return
+    if (!workspaceConfig.lintEnable) return
 
     this.diagnosticCollection = languages.createDiagnosticCollection('mjml')
 
@@ -33,7 +34,7 @@ export default class Linter {
       }),
 
       workspace.onDidChangeTextDocument((event?: TextDocumentChangeEvent) => {
-        const { lintWhenTyping } = workspace.getConfiguration('mjml')
+        const { lintWhenTyping } = workspaceConfig
 
         if (!event || !event.document || !lintWhenTyping) return
 

@@ -1,7 +1,8 @@
 import { writeFile } from 'fs'
 import { basename, resolve as resolvePath } from 'path'
-import { commands, Disposable, Uri, window, workspace } from 'vscode'
+import { commands, Disposable, Uri, window } from 'vscode'
 
+import { workspaceConfig } from './extension'
 import { getPath, renderMJML } from './helper'
 
 export default class Export {
@@ -17,13 +18,13 @@ export default class Export {
     renderMJML((content: string) => {
       const defaultFileName: string = basename(getPath()).replace(/\.[^\.]+$/, '')
 
-      let exportType: string = workspace.getConfiguration('mjml').exportType
+      let exportType: string = workspaceConfig.exportType
 
       if (!exportType.startsWith('.')) {
         exportType = `.${exportType}`
       }
 
-      if (workspace.getConfiguration('mjml').showSaveDialog) {
+      if (workspaceConfig.showSaveDialog) {
         const defaultUri = Uri.file(
           resolvePath(getPath(), `../${defaultFileName}${exportType}`),
         )

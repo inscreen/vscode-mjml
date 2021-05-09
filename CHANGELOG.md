@@ -3,6 +3,17 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [2.0.0] (2021-05-09)
+
+- Color providers
+- Prevent auto opening snippets
+- Added CSS `padding` completion
+- Added completions for all supported attributes
+- Attribute completions scoped to compatible tags
+- Prevented attribute completions inside comments
+- Refactored MJML snippets into completion items
+- Fixed `mjml.preserveFocus` and `mjml.autoClosePreview` config options
+
 ### [1.5.2] (2021-05-01)
 
 Bump MJML version to `4.9.3`.

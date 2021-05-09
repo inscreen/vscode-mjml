@@ -1,10 +1,11 @@
 import { existsSync, readFileSync, statSync } from 'fs'
 import { basename, dirname, join as joinPath, parse as parsePath } from 'path'
 import { TextDocument, TextEditor, window, workspace } from 'vscode'
-
 import { html as jsBeautify } from 'js-beautify'
 import { getExtension, getType as getMimeType } from 'mime'
 import * as mjml2html from 'mjml'
+
+import { workspaceConfig } from './extension'
 
 interface IError {
   errors: Array<{
@@ -26,8 +27,8 @@ export function renderMJML(cb: (content: string) => void): void {
 
   const content: string = mjmlToHtml(
     activeTextEditor.document.getText(),
-    workspace.getConfiguration('mjml').minifyHtmlOutput,
-    workspace.getConfiguration('mjml').beautifyHtmlOutput,
+    workspaceConfig.minifyHtmlOutput,
+    workspaceConfig.beautifyHtmlOutput,
   ).html
 
   if (content) return cb(content)
@@ -83,7 +84,7 @@ export function beautifyHTML(mjml: string): string | undefined {
       return style.replace(/mj-style/gi, 'style')
     })
 
-    const { beautify } = workspace.getConfiguration('mjml')
+    const { beautify } = workspaceConfig
     const beautified: string = jsBeautify(replaced, beautify)
 
     if (replaced !== mjml) {
