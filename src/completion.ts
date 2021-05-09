@@ -9,7 +9,7 @@ import {
   Position,
   TextDocument,
 } from 'vscode'
-import { tagAttributes, cssProperties, htmlTags } from './snippets'
+import { tagAttributes, cssProperties, htmlTags, mjmlSnippets } from './snippets'
 import { isWithinRegex } from './utils'
 import regex from './resources/regex'
 
@@ -37,6 +37,7 @@ export default class Completion {
       this.cssPropertyProvider,
       this.cssValueProvider,
       this.htmlTagProvider,
+      this.mjmlSnippetProvider,
     ]
 
     const disposables = providers.map((provider) => {
@@ -117,5 +118,13 @@ export default class Completion {
     if (isWithinRegex(document, position, regex.anyTag)) return
 
     return htmlTags.map((tag) => createCompletionItem(tag, 'MJML (HTML)'))
+  }
+
+  private mjmlSnippetProvider(document: TextDocument, position: Position) {
+    if (isWithinRegex(document, position, regex.anyTag)) return
+    if (isWithinRegex(document, position, regex.mjStyleBlock)) return
+    if (isWithinRegex(document, position, regex.mjTextBlock)) return
+
+    return mjmlSnippets.map((tag) => createCompletionItem(tag, 'MJML (Snippet)', 14))
   }
 }

@@ -59,7 +59,7 @@
         },
         "mjml.beautifyHtmlOutput": {
           "default": false,
-          "description": "Beautify HTML output. (Works when `mjml.minifyHtmlOutput` aren't enabled.)",
+          "description": "Beautify HTML output. (Works when `mjml.minifyHtmlOutput` isn't enabled.)",
           "type": "boolean"
         },
         "mjml.exportType": {
@@ -168,12 +168,6 @@
         "language": "mjml",
         "scopeName": "text.mjml.basic",
         "path": "./syntaxes/MJML.tmLanguage"
-      }
-    ],
-    "snippets": [
-      {
-        "language": "mjml",
-        "path": "./snippets/mjml.json"
       }
     ],
     "menus": {
