@@ -1,12 +1,12 @@
 export default [
   {
     prefix: 'a',
-    body: '<a href="$1">$2</a>$3',
+    body: '<a href="$1">$2</a>',
     description: 'Tag: `<a href=""></a>`',
   },
   {
     prefix: 'abbr',
-    body: '<abbr title="$1">$2</abbr>$3',
+    body: '<abbr title="$1">$2</abbr>',
     description: 'Tag: `<abbr title=""></abbr>`',
   },
   {
@@ -21,12 +21,12 @@ export default [
   },
   {
     prefix: 'aside',
-    body: '<aside>$1</aside>$2',
+    body: '<aside>$1</aside>',
     description: 'Tag: `<aside></aside>`',
   },
   {
     prefix: 'b',
-    body: '<b>$1</b>$2',
+    body: '<b>$1</b>',
     description: 'Tag: `<b></b>`',
   },
   {
@@ -36,33 +36,33 @@ export default [
   },
   {
     prefix: 'br',
-    body: '<br>',
-    description: 'Tag: `<br>`',
+    body: '<br />',
+    description: 'Tag: `<br />`',
   },
   {
     prefix: 'button',
-    body: '<button type="$1">$2</button>$3',
+    body: '<button type="$1">$2</button>',
     description: 'Tag: `<button type=""></button>`',
   },
   {
     prefix: 'caption',
-    body: '<caption>$1</caption>$2',
+    body: '<caption>$1</caption>',
     description: 'Tag: `<caption></caption>`',
   },
   {
     prefix: 'cite',
-    body: '<cite>$1</cite>$2',
+    body: '<cite>$1</cite>',
     description: 'Tag: `<cite></cite>`',
   },
   {
     prefix: 'code',
-    body: '<code>$1</code>$2',
+    body: '<code>$1</code>',
     description: 'Tag: `<code></code>`',
   },
   {
     prefix: 'col',
-    body: '<col>$2',
-    description: 'Tag: `<col>`',
+    body: '<col $1 />',
+    description: 'Tag: `<col />`',
   },
   {
     prefix: 'colgroup',
@@ -76,12 +76,12 @@ export default [
   },
   {
     prefix: 'dd',
-    body: '<dd>$1</dd>$2',
+    body: '<dd>$1</dd>',
     description: 'Tag: `<dd></dd>`',
   },
   {
     prefix: 'del',
-    body: '<del>$1</del>$2',
+    body: '<del>$1</del>',
     description: 'Tag: `<del></del>`',
   },
   {
@@ -91,12 +91,12 @@ export default [
   },
   {
     prefix: 'dialog',
-    body: '<dialog>$1</dialog>$2',
+    body: '<dialog>$1</dialog>',
     description: 'Tag: `<dialog></dialog>`',
   },
   {
     prefix: 'dfn',
-    body: '<dfn>$1</dfn>$2',
+    body: '<dfn>$1</dfn>',
     description: 'Tag: `<dfn></dfn>`',
   },
   {
@@ -111,12 +111,12 @@ export default [
   },
   {
     prefix: 'dt',
-    body: '<dt>$1</dt>$2',
+    body: '<dt>$1</dt>',
     description: 'Tag: `<dt></dt>`',
   },
   {
     prefix: 'em',
-    body: '<em>$1</em>$2',
+    body: '<em>$1</em>',
     description: 'Tag: `<em></em>`',
   },
   {
@@ -126,7 +126,7 @@ export default [
   },
   {
     prefix: 'figcaption',
-    body: '<figcaption>$1</figcaption>$2',
+    body: '<figcaption>$1</figcaption>',
     description: 'Tag: `<figcaption></figcaption>`',
   },
   {
@@ -146,32 +146,32 @@ export default [
   },
   {
     prefix: 'h1',
-    body: '<h1>$1</h1>$2',
+    body: '<h1>$1</h1>',
     description: 'Tag: `<h1></h1>`',
   },
   {
     prefix: 'h2',
-    body: '<h2>$1</h2>$2',
+    body: '<h2>$1</h2>',
     description: 'Tag: `<h2></h2>`',
   },
   {
     prefix: 'h3',
-    body: '<h3>$1</h3>$2',
+    body: '<h3>$1</h3>',
     description: 'Tag: `<h3></h3>`',
   },
   {
     prefix: 'h4',
-    body: '<h4>$1</h4>$2',
+    body: '<h4>$1</h4>',
     description: 'Tag: `<h4></h4>`',
   },
   {
     prefix: 'h5',
-    body: '<h5>$1</h5>$2',
+    body: '<h5>$1</h5>',
     description: 'Tag: `<h5></h5>`',
   },
   {
     prefix: 'h6',
-    body: '<h6>$1</h6>$2',
+    body: '<h6>$1</h6>',
     description: 'Tag: `<h6></h6>`',
   },
   {
@@ -181,42 +181,42 @@ export default [
   },
   {
     prefix: 'hr',
-    body: '<hr>',
-    description: 'Tag: `<hr>`',
+    body: '<hr />',
+    description: 'Tag: `<hr />`',
   },
   {
     prefix: 'i',
-    body: '<i>$1</i>$2',
+    body: '<i>$1</i>',
     description: 'Tag: `<i></i>`',
   },
   {
     prefix: 'iframe',
-    body: '<iframe src="$1">$2</iframe>$3',
+    body: '<iframe src="$1">$2</iframe>',
     description: 'Tag: `<iframe src=""></iframe>`',
   },
   {
     prefix: 'img',
-    body: '<img src="$1" alt="$2">$3',
-    description: 'Tag: `<img src="" alt="">`',
+    body: '<img src="$1" alt="$2" />',
+    description: 'Tag: `<img src="" alt="" />`',
   },
   {
     prefix: 'input',
-    body: '<input type="$1" name="$2" value="$3">$4',
-    description: 'Tag: `<input type="" name="" value="">`',
+    body: '<input type="$1" name="$2" value="$3" />',
+    description: 'Tag: `<input type="" name="" value="" />`',
   },
   {
     prefix: 'label',
-    body: '<label for="$1">$2</label>$3',
+    body: '<label for="$1">$2</label>',
     description: 'Tag: `<label for=""></label>`',
   },
   {
     prefix: 'legend',
-    body: '<legend>$1</legend>$2',
+    body: '<legend>$1</legend>',
     description: 'Tag: `<legend></legend>`',
   },
   {
     prefix: 'li',
-    body: '<li>$1</li>$2',
+    body: '<li>$1</li>',
     description: 'Tag: `<li></li>`',
   },
   {
@@ -231,7 +231,7 @@ export default [
   },
   {
     prefix: 'mark',
-    body: '<mark>$1</mark>$2',
+    body: '<mark>$1</mark>',
     description: 'Tag: `<mark></mark>`',
   },
   {
@@ -241,7 +241,7 @@ export default [
   },
   {
     prefix: 'meter',
-    body: '<meter value="$1">$2</meter>$3',
+    body: '<meter value="$1">$2</meter>',
     description: 'Tag: `<meter value=""></meter>`',
   },
   {
@@ -251,7 +251,7 @@ export default [
   },
   {
     prefix: 'object',
-    body: '<object width="$1" height="$2" data="$3">$4</object>$5',
+    body: '<object width="$1" height="$2" data="$3">$4</object>',
     description: 'Tag: `<object width="" height="" data=""></object>`',
   },
   {
@@ -266,12 +266,12 @@ export default [
   },
   {
     prefix: 'option',
-    body: '<option value="$1">$2</option>$3',
+    body: '<option value="$1">$2</option>',
     description: 'Tag: `<option value=""></option>`',
   },
   {
     prefix: 'p',
-    body: '<p>$1</p>$2',
+    body: '<p>$1</p>',
     description: 'Tag: `<p></p>`',
   },
   {
@@ -281,12 +281,12 @@ export default [
   },
   {
     prefix: 'q',
-    body: '<q>$1</q>$2',
+    body: '<q>$1</q>',
     description: 'Tag: `<q></q>`',
   },
   {
     prefix: 's',
-    body: '<s>$1</s>$2',
+    body: '<s>$1</s>',
     description: 'Tag: `<s></s>`',
   },
   {
@@ -301,27 +301,27 @@ export default [
   },
   {
     prefix: 'small',
-    body: '<small>$1</small>$2',
+    body: '<small>$1</small>',
     description: 'Tag: `<small></small>`',
   },
   {
     prefix: 'span',
-    body: '<span>$1</span>$2',
+    body: '<span>$1</span>',
     description: 'Tag: `<span></span>`',
   },
   {
     prefix: 'strong',
-    body: '<strong>$1</strong>$2',
+    body: '<strong>$1</strong>',
     description: 'Tag: `<strong></strong>`',
   },
   {
     prefix: 'sub',
-    body: '<sub>$1</sub>$2',
+    body: '<sub>$1</sub>',
     description: 'Tag: `<sub></sub>`',
   },
   {
     prefix: 'sup',
-    body: '<sup>$1</sup>$2',
+    body: '<sup>$1</sup>',
     description: 'Tag: `<sup></sup>`',
   },
   {
@@ -336,12 +336,12 @@ export default [
   },
   {
     prefix: 'td',
-    body: '<td>$1</td>$2',
+    body: '<td>$1</td>',
     description: 'Tag: `<td></td>`',
   },
   {
     prefix: 'textarea',
-    body: '<textarea rows="$1" cols="$2">$3</textarea>$4',
+    body: '<textarea rows="$1" cols="$2">$3</textarea>',
     description: 'Tag: `<textarea rows="" cols=""></textarea>`',
   },
   {
@@ -356,17 +356,17 @@ export default [
   },
   {
     prefix: 'th',
-    body: '<th>$1</th>$2',
+    body: '<th>$1</th>',
     description: 'Tag: `<th></th>`',
   },
   {
     prefix: 'tr',
-    body: '<tr>$1</tr>$2',
+    body: '<tr>$1</tr>',
     description: 'Tag: `<tr></tr>`',
   },
   {
     prefix: 'u',
-    body: '<u>$1</u>$2',
+    body: '<u>$1</u>',
     description: 'Tag: `<u></u>`',
   },
   {
