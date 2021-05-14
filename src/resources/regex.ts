@@ -10,6 +10,8 @@ export default {
   colorAttr: /(?<=<[a-z][^>]*?[\-\s](?:color|style|-?border(?:-(?:top|left|right|bottom)))\s*?=\s*?")[^"]*?(?="[^>]*?>)/g,
   htmlBlock: /(?<=<mj-t(?:ext|able)(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*(?<!\/)>)[\s\S]*?(?=<\/mj-t(?:ext|able)\s*>)/g,
   styleBlock: /(?<=<mj-style(?:\s+inline\s*=\s*"\s*[a-z]*\s*")?\s*>)[^<]*?(?=<\/mj-style>)/g,
+  htmlComment: /(?<=<!--)(\s|\S)*?(?=-->)/g,
+  cssComment: /(?<=\/\*)(\s|\S)*?(?=\*\/)/g,
   increaseIndentPattern: /<(?!\?|(?:area|base|br|col|frame|hr|html|img|input|keygen|link|menuitem|meta|param|source|track|wbr)\b|[^>]*\/>)([-_.A-Za-z0-9]+)(?=\s|>)\b[^>]*>(?!.*<\/\1>)|<!--(?!.*-->)|\{[^}"']*$/,
   decreaseIndentPattern: /^\s*(<\/(?!html)[-_\.A-Za-z0-9]+\b[^>]*>|-->|\})/,
   wordPattern: /(-?\d*\.\d\w*)|([^`~!@$^&*()=+[{\]}\\|;:'",.<>/\s]+)/g,

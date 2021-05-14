@@ -12,6 +12,7 @@ import {
 import { tagAttributes, cssProperties, htmlTags, mjmlSnippets } from './snippets'
 import { isWithinRegex } from './utils'
 import regex from './resources/regex'
+import { workspaceConfig } from './extension'
 
 interface Snippet {
   prefix: string
@@ -74,6 +75,7 @@ export default class Completion {
     if (!isWithinRegex(document, position, regex.styleBlock)) return
     if (!isWithinRegex(document, position, regex.curlyBrackets)) return
     if (isWithinRegex(document, position, regex.cssValue)) return
+    if (isWithinRegex(document, position, regex.cssComment)) return
 
     return cssProperties.map((prop) => {
       const propCopy = { ...prop }
@@ -89,6 +91,12 @@ export default class Completion {
   }
 
   private cssValueProvider(document: TextDocument, position: Position) {
+    if (
+      !workspaceConfig.snippetsInsideComments &&
+      isWithinRegex(document, position, regex.cssComment)
+    )
+      return
+
     const snippetCompletions: ProviderResult<CompletionItem[] | CompletionList> = []
     const range = document.getWordRangeAtPosition(position, regex.cssPropertyValue)
 
@@ -124,6 +132,11 @@ export default class Completion {
     if (isWithinRegex(document, position, regex.anyTag)) return
     if (isWithinRegex(document, position, regex.styleBlock)) return
     if (isWithinRegex(document, position, regex.htmlBlock)) return
+    if (
+      !workspaceConfig.snippetsInsideComments &&
+      isWithinRegex(document, position, regex.htmlComment)
+    )
+      return
 
     return mjmlSnippets.map((tag) => createCompletionItem(tag, 'MJML (Snippet)', 14))
   }

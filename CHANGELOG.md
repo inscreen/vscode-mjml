@@ -3,6 +3,13 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [2.1.0] (14/05/2021)
+
+- Fix `<-- mj-head-render -->` not working with other comments in the same file
+- Add slash to self-closing tag snippets
+- Remove end of snippet tab-stop
+- Add option to prevent snippets/completion items inside comments
+
 ### [2.0.2] (09/05/2021)
 
 Fix regex for self-closing `mj-text`

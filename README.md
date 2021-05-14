@@ -14,6 +14,7 @@ This is a fork of the [@mjmlio extension](https://github.com/mjmlio/vscode-mjml)
 - `<!-- mjml-render -->`: add this comment anywhere in a file **that doesn't already have an `<mjml>` tag** to enable previewing.
 - `<!-- mj-head-render ... -->`: wraps `...` in `mj-head` tags which are only rendered when previewing with `mjml-render`.
 - Color providers (hover palettes)
+- `mjml.snippetsInsideComments`: optionally prevent snippets/completion items inside HTML and CSS comments
 
 ### Removals:
 

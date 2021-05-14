@@ -116,6 +116,11 @@
           "default": true,
           "description": "Automatically switch preview when editing a different file.",
           "type": "boolean"
+        },
+        "mjml.snippetsInsideComments": {
+          "default": true,
+          "description": "Determines whether snippets/completion items are triggered inside HTML and CSS comments.",
+          "type": "boolean"
         }
       }
     },
