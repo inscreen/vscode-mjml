@@ -144,11 +144,11 @@ export default class Preview {
   }
 
   private wrapInMjmlTemplate(docText: string): string {
-    if (/<!-- mjml-render -->/m.test(docText)) {
-      const mjHead = docText.match(/<!-- mj-head-render((\s|\S)*)-->/m)
+    if (/<!--\s*mjml-render\s*-->/.test(docText)) {
+      const mjHead = docText.match(/(?<=<!-- mj-head-render)(\s|\S)*?(?=-->)/)
 
       return `<mjml>${
-        mjHead ? `<mj-head>${mjHead[1]}</mj-head>` : ''
+        mjHead ? `<mj-head>${mjHead[0]}</mj-head>` : ''
       }<mj-body>${docText}</mj-body></mjml>`
     }
 
