@@ -83,6 +83,7 @@ The following commands are available:
 | `mjml.autoClosePreview`           | `true`  | Automatically close preview when all open MJML documents have been closed.                   |
 | `mjml.showSaveDialog`             | `false` | Show the save as dialog instead of input box.                                                |
 | `mjml.switchOnSeparateFileChange` | `true`  | Automatically switch preview when editing a different file.                                  |
+| `mjml.snippetsInsideComments`     | `true`  | Determines whether snippets/completion items are triggered inside HTML and CSS comments.     |
 
 ## Snippets
 
