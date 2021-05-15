@@ -125,7 +125,7 @@ export default class Completion {
 
     const isWithinComment = isWithinRegex(document, position, regex.htmlComment)
 
-    if (!workspaceConfig.snippetInsideComments && isWithinComment) return
+    if (!workspaceConfig.snippetsInsideComments && isWithinComment) return
 
     return this.handleTagCompletion(document, position, htmlTags, 'MJML (HTML)')
   }
@@ -137,7 +137,7 @@ export default class Completion {
 
     const isWithinComment = isWithinRegex(document, position, regex.htmlComment)
 
-    if (!workspaceConfig.snippetInsideComments && isWithinComment) return
+    if (!workspaceConfig.snippetsInsideComments && isWithinComment) return
 
     return this.handleTagCompletion(
       document,
