@@ -11,8 +11,8 @@ import {
 } from 'vscode'
 import { tagAttributes, cssProperties, htmlTags, mjmlSnippets } from './snippets'
 import { isWithinRegex } from './utils'
-import regex from './resources/regex'
 import { workspaceConfig } from './extension'
+import regex from './resources/regex'
 
 interface Snippet {
   prefix: string
@@ -43,7 +43,7 @@ export default class Completion {
 
     const disposables = providers.map((provider) => {
       return languages.registerCompletionItemProvider('mjml', {
-        provideCompletionItems: provider,
+        provideCompletionItems: provider.bind(this),
       })
     })
 
@@ -91,11 +91,9 @@ export default class Completion {
   }
 
   private cssValueProvider(document: TextDocument, position: Position) {
-    if (
-      !workspaceConfig.snippetsInsideComments &&
-      isWithinRegex(document, position, regex.cssComment)
-    )
-      return
+    const isWithinComment = isWithinRegex(document, position, regex.cssComment)
+
+    if (!workspaceConfig.snippetsInsideComments && isWithinComment) return
 
     const snippetCompletions: ProviderResult<CompletionItem[] | CompletionList> = []
     const range = document.getWordRangeAtPosition(position, regex.cssPropertyValue)
@@ -125,19 +123,49 @@ export default class Completion {
     if (!isWithinRegex(document, position, regex.htmlBlock)) return
     if (isWithinRegex(document, position, regex.anyTag)) return
 
-    return htmlTags.map((tag) => createCompletionItem(tag, 'MJML (HTML)'))
+    const isWithinComment = isWithinRegex(document, position, regex.htmlComment)
+
+    if (!workspaceConfig.snippetInsideComments && isWithinComment) return
+
+    return this.handleTagCompletion(document, position, htmlTags, 'MJML (HTML)')
   }
 
   private mjmlSnippetProvider(document: TextDocument, position: Position) {
-    if (isWithinRegex(document, position, regex.anyTag)) return
     if (isWithinRegex(document, position, regex.styleBlock)) return
     if (isWithinRegex(document, position, regex.htmlBlock)) return
-    if (
-      !workspaceConfig.snippetsInsideComments &&
-      isWithinRegex(document, position, regex.htmlComment)
-    )
-      return
+    if (isWithinRegex(document, position, regex.anyTag)) return
 
-    return mjmlSnippets.map((tag) => createCompletionItem(tag, 'MJML (Snippet)', 14))
+    const isWithinComment = isWithinRegex(document, position, regex.htmlComment)
+
+    if (!workspaceConfig.snippetInsideComments && isWithinComment) return
+
+    return this.handleTagCompletion(
+      document,
+      position,
+      mjmlSnippets,
+      'MJML (Snippet)',
+      14,
+    )
+  }
+
+  private handleTagCompletion(
+    document: TextDocument,
+    position: Position,
+    tags: Snippet[],
+    detail: string,
+    kind?: number,
+  ) {
+    const range = document.getWordRangeAtPosition(position, /<[a-z\-]+/)
+    const typedText = range && document.getText(range)
+
+    return tags.map((tag) => {
+      const tagCopy = { ...tag }
+
+      if (typedText && typedText[0] === '<') {
+        tagCopy.body = tag.body.slice(1)
+      }
+
+      return createCompletionItem(tagCopy, detail, kind)
+    })
   }
 }

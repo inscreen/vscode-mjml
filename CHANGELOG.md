@@ -9,6 +9,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Add slash to self-closing tag snippets
 - Remove end of snippet tab-stop
 - Add option to prevent snippets/completion items inside comments
+- Tag completions account for leading `<`
+- Prevent completions inside closing tags as well as opening tags
 
 ### [2.0.2] (09/05/2021)
 
