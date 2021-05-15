@@ -599,7 +599,7 @@ export default [
     prefix: 'mj-class',
     body: 'mj-class="$1"',
     description: 'mj-class attribute: `mj-class=""`',
-    els: ['mj-[a-z-]*?(?<!class)'],
+    els: ['mj-[a-z-]*?(?<!class|all)'],
     noMjClass: true,
   },
   {

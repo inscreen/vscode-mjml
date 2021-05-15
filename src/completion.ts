@@ -55,7 +55,7 @@ export default class Completion {
       const attrCopy = { ...attr }
 
       const { openingTag } = regex.dynamicPatterns
-      const tagNames = `${attr.noMjClass ? '' : 'mj-class|'}${attr.els.join('|')}`
+      const tagNames = `${attr.noMjClass ? '' : 'mj-class|mj-all|'}${attr.els.join('|')}`
       const formattedRegex = new RegExp(openingTag.start + tagNames + openingTag.end, 'g')
 
       if (!isWithinRegex(document, position, formattedRegex)) return

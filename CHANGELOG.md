@@ -3,7 +3,11 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
-### [2.1.0] (14/05/2021)
+### [2.1.1] (15/05/2021)
+
+`<mj-all />` attribute completions
+
+### [2.1.0] (15/05/2021)
 
 - Fix `<-- mj-head-render -->` not working with other comments in the same file
 - Add slash to self-closing tag snippets
