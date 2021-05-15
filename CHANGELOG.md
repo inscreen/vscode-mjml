@@ -3,6 +3,10 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [2.2.0] (16/05/2021)
+
+- Document link providers
+
 ### [2.1.2] (15/05/2021)
 
 Fix `snippetsInsideComments`

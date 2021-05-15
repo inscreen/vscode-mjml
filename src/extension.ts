@@ -9,6 +9,7 @@ import Version from './version'
 import Completion from './completion'
 import Color from './color'
 import LanguageConfig from './language'
+import PathLink from './path'
 
 export let workspaceConfig = workspace.getConfiguration('mjml')
 
@@ -28,4 +29,5 @@ export function activate(context: ExtensionContext): void {
   new Completion(context.subscriptions)
   new Color(context.subscriptions)
   new LanguageConfig(context.subscriptions)
+  new PathLink(context.subscriptions)
 }
