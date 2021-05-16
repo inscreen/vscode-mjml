@@ -30,13 +30,15 @@ export default class PathLink {
       const rootPath = document.fileName.split('/')
 
       if (!rootPath) return
-      if (matchSections[0] !== '..') rootPath.pop()
+
+      rootPath.pop()
 
       for (let i = 0; i < level; i++) {
-        rootPath?.pop()
+        rootPath.pop()
+        matchSections.shift()
       }
 
-      const uri = Uri.file(path.resolve(path.join(rootPath.join('/'), match[0])))
+      const uri = Uri.file(path.join(rootPath.join('/'), matchSections.join('/')))
 
       const startPos = document.positionAt(match.index)
       const endPos = document.positionAt(match.index + match[0].length)
