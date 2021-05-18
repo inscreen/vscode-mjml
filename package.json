@@ -196,7 +196,6 @@
   },
   "devDependencies": {
     "@types/copy-paste": "^1.1.30",
-    "@types/file-url": "^3.0.2",
     "@types/js-beautify": "^1.13.1",
     "@types/mime": "^2.0.3",
     "@types/node": "^15.0.2",
@@ -205,9 +204,6 @@
     "@typescript-eslint/eslint-plugin": "^4.22.1",
     "@typescript-eslint/parser": "^4.22.1",
     "eslint": "^7.25.0",
-    "highlight.js": "^10.7.2",
-    "markdown-it": "^12.0.6",
-    "markdown-it-anchor": "^7.1.0",
     "prettier": "^2.2.1",
     "typescript": "^4.2.4"
   },

@@ -11,3 +11,4 @@ test/**
 ISSUE_TEMPLATE.md
 tsconfig.json
 .eslintrc
+.eslintignore
