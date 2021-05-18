@@ -2,7 +2,13 @@ export default [
   {
     prefix: 'background',
     body: 'background: $1;',
-    values: ['initial', 'inherit'],
+    values: [
+      'url("$1")',
+      'linear-gradient($1)',
+      'radial-gradient($1)',
+      'initial',
+      'inherit',
+    ],
     description: 'CSS background property: `background: ;`',
   },
   {

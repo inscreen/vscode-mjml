@@ -104,7 +104,7 @@ export default class Completion {
     const addSemi = !typedText.includes(';')
 
     cssProperties.forEach((prop) => {
-      const bodyRegex = new RegExp(`(?<!-)${prop.body.split('$1').join('[^;]*')}?`)
+      const bodyRegex = new RegExp(`(?<!-)${prop.body.split(' $1').join('[^;]*')}?`)
 
       if (!bodyRegex.test(typedText)) return
 
