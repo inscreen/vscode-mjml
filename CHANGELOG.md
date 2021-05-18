@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Document link providers
 - Linked-editing providers
 - Color providers in `border` attribute
+- CSS value completions without leading whitespace
+- CSS `background` value completions
+- CSS gradient support for color-providers
 
 ### [2.1.2] (15/05/2021)
 
