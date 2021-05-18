@@ -15,7 +15,8 @@ This is a fork of the [@mjmlio extension](https://github.com/mjmlio/vscode-mjml)
 - `<!-- mj-head-render ... -->`: wraps `...` in `mj-head` tags which are only rendered when previewing with `mjml-render`.
 - Color providers (hover palettes)
 - `mjml.snippetsInsideComments`: optionally prevent snippets/completion items inside HTML and CSS comments
-- <kbd>cmd</kbd> + <kbd>click</kbd> relative paths to follow link
+- <kbd>cmd</kbd> (or your configured key) + <kbd>click</kbd> relative paths to follow link
+- Linked-editing of tag pairs (if enabled in `settings.json` under `editor.linkedEditing`)
 
 ### Removals:
 

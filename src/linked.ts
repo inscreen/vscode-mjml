@@ -26,20 +26,20 @@ export default class LinkedEditing {
 
     if (!startRange) return
 
-    const typedText = '<' + document.getText(startRange)
-    const offset = document.offsetAt(startRange.start)
-    const docText = '<' + document.getText().slice(offset)
+    const offset = document.offsetAt(startRange.start) - '<'.length
+    const docText = document.getText().slice(offset)
+    const typedText = document.getText(startRange)
 
     const tagIndexes = getTagIndexes(docText, {
-      start: `${typedText}[^>]*>`,
-      end: `(?<=</)${typedText.slice(1)}(?=>)`,
+      start: `<${typedText}[^>]*>`,
+      end: `(?<=</)${typedText}(?=>)`,
     })
 
     if (!tagIndexes) return
 
     const endRange = new Range(
-      document.positionAt(tagIndexes.nodeEnd.startIndex + offset - 1),
-      document.positionAt(tagIndexes.nodeEnd.endIndex + offset - 1),
+      document.positionAt(tagIndexes.nodeEnd.startIndex + offset),
+      document.positionAt(tagIndexes.nodeEnd.endIndex + offset),
     )
 
     return new LinkedEditingRanges([startRange, endRange])

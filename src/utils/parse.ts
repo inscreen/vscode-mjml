@@ -1,7 +1,7 @@
 import { TextDocument, Position } from 'vscode'
 
 type Delimiters = { start: string; end: string }
-export type TagIndex = { startIndex: number; endIndex: number }
+type TagIndex = { startIndex: number; endIndex: number }
 type NodeIndex = { nodeStart: TagIndex; nodeEnd: TagIndex }
 
 /**
