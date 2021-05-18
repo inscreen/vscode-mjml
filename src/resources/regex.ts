@@ -8,7 +8,7 @@ export default {
   curlyBrackets: /(?<={)[^}]*(?=})/g,
   cssValue: /(?<=:)[^;]*(?=;)/g,
   cssPropertyValue: /(?:\w|-)*:\s[^;]*;/,
-  colorAttr: /(?<=<[a-z][^>]*?[\-\s](?:color|style|-?border(?:-(?:top|left|right|bottom)))\s*?=\s*?")[^"]*?(?="[^>]*?>)/g,
+  colorAttr: /(?<=<[a-z][^>]*?[\-\s](?:color|style|-?border(?:-(?:top|left|right|bottom))?)\s*?=\s*?")[^"]*?(?="[^>]*?>)/g,
   htmlBlock: /(?<=<mj-t(?:ext|able)(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])*(?<!\/)>)[\s\S]*?(?=<\/mj-t(?:ext|able)\s*>)/g,
   styleBlock: /(?<=<mj-style(?:\s+inline\s*=\s*"\s*[a-z]*\s*")?\s*>)[^<]*?(?=<\/mj-style>)/g,
   htmlComment: /(?<=<!--)[\s\S]*?(?=-->)/g,

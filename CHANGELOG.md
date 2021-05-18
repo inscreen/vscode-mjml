@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 - Document link providers
 - Linked-editing providers
+- Color providers in `border` attribute
 
 ### [2.1.2] (15/05/2021)
 
