@@ -19,9 +19,11 @@ export default class PathLink {
     const links = [...matches].map((match) => {
       if (!match.index) return
 
-      let level = 0
+      const startPos = document.positionAt(match.index)
+      const endPos = document.positionAt(match.index + match[0].length)
 
       const matchSections = match[0].split('/')
+      let level = 0
 
       matchSections.forEach((section) => {
         if (section === '..') level += 1
@@ -39,9 +41,6 @@ export default class PathLink {
       }
 
       const uri = Uri.file(path.join(rootPath.join('/'), matchSections.join('/')))
-
-      const startPos = document.positionAt(match.index)
-      const endPos = document.positionAt(match.index + match[0].length)
 
       return new DocumentLink(new Range(startPos, endPos), uri)
     })
