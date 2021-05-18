@@ -21,15 +21,17 @@ workspace.onDidChangeConfiguration((e) => {
 })
 
 export function activate(context: ExtensionContext): void {
-  new Beautify(context.subscriptions)
-  new Copy(context.subscriptions)
-  new Export(context.subscriptions)
-  new Linter(context.subscriptions)
-  new Preview(context)
-  new Version(context.subscriptions)
-  new Completion(context.subscriptions)
-  new Color(context.subscriptions)
-  new LanguageConfig(context.subscriptions)
-  new LinkedEditing(context.subscriptions)
-  new PathLink(context.subscriptions)
+  const { subscriptions } = context
+
+  new Beautify(subscriptions)
+  new Copy(subscriptions)
+  new Export(subscriptions)
+  new Linter(subscriptions)
+  new Preview(subscriptions)
+  new Version(subscriptions)
+  new Completion(subscriptions)
+  new Color(subscriptions)
+  new LanguageConfig(subscriptions)
+  new LinkedEditing(subscriptions)
+  new PathLink(subscriptions)
 }

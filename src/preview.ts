@@ -1,7 +1,6 @@
 import {
   commands,
   Disposable,
-  ExtensionContext,
   TextDocument,
   TextDocumentChangeEvent,
   TextEditor,
@@ -18,12 +17,9 @@ import { workspaceConfig } from './extension'
 export default class Preview {
   private openedDocuments: TextDocument[] = []
   private previewOpen = false
-  private subscriptions: Disposable[]
   private webview: WebviewPanel | undefined
 
-  constructor(context: ExtensionContext) {
-    this.subscriptions = context.subscriptions
-
+  constructor(private subscriptions: Disposable[]) {
     this.subscriptions.push(
       commands.registerCommand('mjml.previewToSide', () => {
         if (window.activeTextEditor) {
