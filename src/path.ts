@@ -1,12 +1,13 @@
 import { Disposable, languages, DocumentLink, Range, TextDocument, Uri } from 'vscode'
 import path = require('path')
 
+import { isWithinRegex } from './utils'
 import regex from './resources/regex'
 
 export default class PathLink {
   constructor(subscriptions: Disposable[]) {
     const provider = languages.registerDocumentLinkProvider('mjml', {
-      provideDocumentLinks: this.provideDocumentLinks,
+      provideDocumentLinks: this.provideDocumentLinks.bind(this),
     })
 
     subscriptions.push(provider)
@@ -14,37 +15,65 @@ export default class PathLink {
 
   private provideDocumentLinks(document: TextDocument) {
     const docText = document.getText()
-    const matches = docText.matchAll(regex.relativePaths)
+    const attrMatches = docText.matchAll(regex.relativeAttrPaths)
+    const cssMatches = docText.matchAll(regex.relativeCssPaths)
 
-    const links = [...matches].map((match) => {
-      if (!match.index) return
+    const attrLinks = [...attrMatches]
+      .map((match) => {
+        if (!match.index) return
 
-      const startPos = document.positionAt(match.index)
-      const endPos = document.positionAt(match.index + match[0].length)
+        const position = document.positionAt(match.index)
 
-      const matchSections = match[0].split('/')
-      let level = 0
+        if (!isWithinRegex(document, position, regex.anyTag)) return
+        if (isWithinRegex(document, position, regex.htmlComment)) return
 
-      matchSections.forEach((section) => {
-        if (section === '..') level += 1
+        return this.locatePath(document, match)
       })
+      .filter((link) => link)
 
-      const rootPath = document.fileName.split('/')
+    const cssLinks = [...cssMatches]
+      .map((match) => {
+        if (!match.index) return
 
-      if (!rootPath) return
+        const position = document.positionAt(match.index)
 
-      rootPath.pop()
+        if (!isWithinRegex(document, position, regex.styleBlock)) return
+        if (isWithinRegex(document, position, regex.cssComment)) return
+        if (!isWithinRegex(document, position, regex.cssValue)) return
 
-      for (let i = 0; i < level; i++) {
-        rootPath.pop()
-        matchSections.shift()
-      }
+        return this.locatePath(document, match)
+      })
+      .filter((link) => link)
 
-      const uri = Uri.file(path.join(rootPath.join('/'), matchSections.join('/')))
+    return [...attrLinks, ...cssLinks] as DocumentLink[]
+  }
 
-      return new DocumentLink(new Range(startPos, endPos), uri)
+  private locatePath(document: TextDocument, match: RegExpMatchArray) {
+    if (!match.index) return
+
+    const startPos = document.positionAt(match.index)
+    const endPos = document.positionAt(match.index + match[0].length)
+
+    const matchSections = match[0].split('/')
+    let level = 0
+
+    matchSections.forEach((section) => {
+      if (section === '..') level += 1
     })
 
-    return links.filter((link) => link) as DocumentLink[]
+    const rootPath = document.fileName.split('/')
+
+    if (!rootPath) return
+
+    rootPath.pop()
+
+    for (let i = 0; i < level; i++) {
+      rootPath.pop()
+      matchSections.shift()
+    }
+
+    const uri = Uri.file(path.join(rootPath.join('/'), matchSections.join('/')))
+
+    return new DocumentLink(new Range(startPos, endPos), uri)
   }
 }
