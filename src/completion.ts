@@ -155,7 +155,7 @@ export default class Completion {
     detail: string,
     kind?: number,
   ) {
-    const range = document.getWordRangeAtPosition(position, regex.typedTag)
+    const range = document.getWordRangeAtPosition(position, regex.typedOpeningTag)
     const typedText = range && document.getText(range)
 
     return tags.map((tag) => {

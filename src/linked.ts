@@ -19,29 +19,52 @@ export default class LinkedEditing {
   }
 
   private provideLinkedEditingRanges(document: TextDocument, position: Position) {
-    if (isWithinRegex(document, position, regex.styleBlock)) return
-    if (isWithinRegex(document, position, regex.htmlComment)) return
+    const { styleBlock, htmlComment, typedOpeningTag, typedClosingTag } = regex
 
-    const startRange = document.getWordRangeAtPosition(position, regex.typedTag)
+    if (isWithinRegex(document, position, styleBlock)) return
+    if (isWithinRegex(document, position, htmlComment)) return
 
-    if (!startRange) return
+    const openTagRange = document.getWordRangeAtPosition(position, typedOpeningTag)
+    const closingTagRange = document.getWordRangeAtPosition(position, typedClosingTag)
 
-    const offset = document.offsetAt(startRange.start) - '<'.length
-    const docText = document.getText().slice(offset)
-    const typedText = document.getText(startRange)
+    if (openTagRange) {
+      const offset = document.offsetAt(openTagRange.start) - '<'.length
+      const docText = document.getText().slice(offset)
+      const typedText = document.getText(openTagRange)
 
-    const tagIndexes = getTagIndexes(docText, {
-      start: `<${typedText}[^>]*>`,
-      end: `(?<=</)${typedText}(?=>)`,
-    })
+      const tagIndexes = getTagIndexes(docText, {
+        start: `<${typedText}[^>]*>?`,
+        end: `(?<=</)${typedText}(?=>?)`,
+      })
 
-    if (!tagIndexes) return
+      if (!tagIndexes) return
 
-    const endRange = new Range(
-      document.positionAt(tagIndexes.nodeEnd.startIndex + offset),
-      document.positionAt(tagIndexes.nodeEnd.endIndex + offset),
-    )
+      const endRange = new Range(
+        document.positionAt(tagIndexes.nodeEnd.startIndex + offset),
+        document.positionAt(tagIndexes.nodeEnd.endIndex + offset),
+      )
 
-    return new LinkedEditingRanges([startRange, endRange])
+      return new LinkedEditingRanges([openTagRange, endRange])
+    } else if (closingTagRange) {
+      const offset = document.offsetAt(closingTagRange.end) + '>'.length
+      const docText = document.getText().slice(0, offset).split('').reverse().join('')
+      const typedText = document.getText(closingTagRange).split('').reverse().join('')
+
+      const tagIndexes = getTagIndexes(docText, {
+        start: `>?${typedText}/<`,
+        end: `(?<=>?[^<]*)${typedText}(?=<)`,
+      })
+
+      if (!tagIndexes) return
+
+      const endRange = new Range(
+        document.positionAt(offset - tagIndexes.nodeEnd.startIndex),
+        document.positionAt(offset - tagIndexes.nodeEnd.endIndex),
+      )
+
+      return new LinkedEditingRanges([closingTagRange, endRange])
+    }
+
+    return
   }
 }
