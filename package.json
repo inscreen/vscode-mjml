@@ -46,7 +46,6 @@
   "main": "./out/extension",
   "contributes": {
     "configuration": {
-      "type": "object",
       "title": "MJML",
       "properties": {
         "mjml.beautify": {
