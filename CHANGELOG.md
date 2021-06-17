@@ -3,6 +3,10 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [2.2.4] (17/06/2021)
+
+Update dependencies.
+
 ### [2.2.1 - 2.2.3] (06/06/2021)
 
 Prevent color-providers in `style="white-space:...`.
