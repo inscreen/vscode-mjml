@@ -126,9 +126,7 @@ export default class Preview {
       document = this.openedDocuments[0] || document
     }
 
-    const docText = this.wrapInMjmlTemplate(document.getText())
-    const html: string = mjmlToHtml(docText, false, false, document.uri.fsPath, 'skip')
-      .html
+    const html: string = mjmlToHtml(false, false)
 
     if (html) {
       this.addDocument(document)
@@ -137,18 +135,6 @@ export default class Preview {
     }
 
     return this.error("Active editor doesn't show a MJML document.")
-  }
-
-  private wrapInMjmlTemplate(docText: string): string {
-    if (/<!--\s*mjml-render\s*-->/.test(docText)) {
-      const mjHead = docText.match(/(?<=<!-- mj-head-render)(\s|\S)*?(?=-->)/)
-
-      return `<mjml>${
-        mjHead ? `<mj-head>${mjHead[0]}</mj-head>` : ''
-      }<mj-body>${docText}</mj-body></mjml>`
-    }
-
-    return docText
   }
 
   private setBackgroundColor(html: string): string {

@@ -11,21 +11,18 @@
       "stopOnEntry": false,
       "sourceMaps": true,
       "outFiles": ["${workspaceFolder}/out/src/**/*.js"],
-      "preLaunchTask": "npm"
+      "preLaunchTask": "npm-compile"
     },
     {
-      "name": "Launch Tests",
+      "name": "Launch Built Extension",
       "type": "extensionHost",
       "request": "launch",
       "runtimeExecutable": "${execPath}",
-      "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}",
-        "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
-      ],
+      "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
       "stopOnEntry": false,
       "sourceMaps": true,
-      "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
-      "preLaunchTask": "npm"
+      "outFiles": ["${workspaceFolder}/dist/extension.js"],
+      "preLaunchTask": "npm-build"
     }
   ]
 }

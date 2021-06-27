@@ -2,7 +2,7 @@
 **/*.ts
 .vscode/**
 images/**/*.gif
-out/test/**
+out/**
 src/**
 typings/**
 test/**

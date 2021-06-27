@@ -12,9 +12,11 @@ import {
   window,
   workspace,
 } from 'vscode'
+import mjml2html from 'mjml'
+import type { MJMLParseError } from 'mjml-core'
 
 import { workspaceConfig } from './extension'
-import { getPath, mjmlToHtml } from './helper'
+import { getPath } from './helper'
 
 export default class Linter {
   private diagnosticCollection!: DiagnosticCollection
@@ -73,32 +75,31 @@ export default class Linter {
     if (textDocument.languageId !== 'mjml') return
 
     const diagnostics: Diagnostic[] = []
+    const errors = mjml2html(textDocument.getText(), {
+      minify: false,
+      beautify: false,
+      filePath: getPath(),
+      validationLevel: 'soft',
+    }).errors
 
-    try {
-      const errors = mjmlToHtml(textDocument.getText(), false, false, getPath(), 'strict')
-        .errors
+    if (errors && errors[0]) {
+      errors.forEach((error: MJMLParseError) => {
+        const line: number = error.line - 1
+        const currentLine: string = textDocument.lineAt(line).text
 
-      if (errors && errors[0]) {
-        errors[0].errors.forEach((error) => {
-          const line: number = error.line - 1
-          const currentLine: string = textDocument.lineAt(line).text
-
-          diagnostics.push(
-            new Diagnostic(
-              new Range(
-                new Position(line, currentLine.indexOf('<')),
-                new Position(line, currentLine.length),
-              ),
-              error.message,
-              DiagnosticSeverity.Error,
+        diagnostics.push(
+          new Diagnostic(
+            new Range(
+              new Position(line, currentLine.indexOf('<')),
+              new Position(line, currentLine.length),
             ),
-          )
-        })
-      }
-
-      this.diagnosticCollection.set(textDocument.uri, diagnostics)
-    } catch (error) {
-      this.diagnosticCollection.set(textDocument.uri, diagnostics)
+            error.message,
+            DiagnosticSeverity.Error,
+          ),
+        )
+      })
     }
+
+    this.diagnosticCollection.set(textDocument.uri, diagnostics)
   }
 }

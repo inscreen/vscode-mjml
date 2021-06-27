@@ -3,6 +3,10 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [2.3.0] (27/06/2021)
+
+Bundle extension with esbuild.
+
 ### [2.2.5] (27/06/2021)
 
 Fix tag name word boundaries and whitespace in closing bracket affecting linked-editing.

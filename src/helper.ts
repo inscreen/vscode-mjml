@@ -1,18 +1,11 @@
 import { existsSync, readFileSync, statSync } from 'fs'
-import { basename, dirname, join as joinPath, parse as parsePath } from 'path'
-import { TextDocument, TextEditor, window, workspace } from 'vscode'
+import { basename, dirname, join as joinPath } from 'path'
+import { extensions, TextDocument, TextEditor, window } from 'vscode'
 import { html as jsBeautify } from 'js-beautify'
 import { getExtension, getType as getMimeType } from 'mime'
-import * as mjml2html from 'mjml'
+import { spawnSync } from 'child_process'
 
 import { workspaceConfig } from './extension'
-
-interface IError {
-  errors: Array<{
-    line: number
-    message: string
-  }>
-}
 
 export function renderMJML(cb: (content: string) => void): void {
   const activeTextEditor: TextEditor | undefined = window.activeTextEditor
@@ -26,10 +19,9 @@ export function renderMJML(cb: (content: string) => void): void {
   }
 
   const content: string = mjmlToHtml(
-    activeTextEditor.document.getText(),
     workspaceConfig.minifyHtmlOutput,
     workspaceConfig.beautifyHtmlOutput,
-  ).html
+  )
 
   if (content) return cb(content)
 
@@ -42,25 +34,23 @@ export function isMJMLFile(document: TextDocument): boolean {
   return document.languageId === 'mjml' && (scheme === 'file' || scheme === 'untitled')
 }
 
-export function mjmlToHtml(
-  mjml: string,
-  minify: boolean,
-  beautify: boolean,
-  path?: string,
-  validation: 'strict' | 'soft' | 'skip' = 'skip',
-): { html: string; errors: IError[] } {
+export function mjmlToHtml(minify: boolean, beautify: boolean): string {
   try {
-    if (!path) path = getPath()
-
-    return mjml2html(mjml, {
-      beautify,
-      filePath: path,
-      minify,
-      mjmlConfigPath: getCWD(path),
-      validationLevel: validation,
-    })
+    return spawnSync(
+      extensions.getExtension('danielknights.vscode-mjml')?.extensionPath +
+        '/node_modules/.bin/mjml',
+      [
+        getPath(),
+        'skip',
+        '--config.beautify',
+        beautify.toString(),
+        '--config.minify',
+        minify.toString(),
+      ],
+    ).stdout.toString()
   } catch (error) {
-    return { html: '', errors: [error] }
+    console.error(error)
+    return ''
   }
 }
 
@@ -117,16 +107,6 @@ export function getPath(): string {
   }
 
   return ''
-}
-
-function getCWD(mjmlPath?: string): string {
-  const { workspaceFolders } = workspace
-
-  if (workspaceFolders && workspaceFolders[0]) {
-    return workspaceFolders[0].uri.path
-  }
-
-  return mjmlPath ? parsePath(mjmlPath).dir : ''
 }
 
 function encodeImage(filePath: string, original: string): string {
