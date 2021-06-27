@@ -3,6 +3,10 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [2.4.1] (27/06/2021)
+
+Fix extension output dir.
+
 ### [2.4.0] (27/06/2021)
 
 Add `role` attribute for `mj-table`.
