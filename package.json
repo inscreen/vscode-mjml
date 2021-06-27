@@ -43,7 +43,7 @@
   "activationEvents": [
     "onLanguage:mjml"
   ],
-  "main": "./dist/extension",
+  "main": "./out/extension",
   "contributes": {
     "configuration": {
       "title": "MJML",

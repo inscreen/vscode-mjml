@@ -7,8 +7,7 @@
       "command": "npm",
       "args": ["run", "compile", "--loglevel", "silent"],
       "isBackground": true,
-      "problemMatcher": "$tsc-watch",
-      "group": "build"
+      "problemMatcher": "$tsc-watch"
     },
     {
       "label": "npm-build",
@@ -16,8 +15,7 @@
       "command": "npm",
       "args": ["run", "build", "--loglevel", "silent"],
       "isBackground": true,
-      "problemMatcher": "$tsc-watch",
-      "group": "build"
+      "problemMatcher": "$tsc-watch"
     }
   ]
 }

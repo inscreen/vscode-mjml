@@ -49,7 +49,7 @@ export function mjmlToHtml(
       formattedHTML = beautifyHTML(html) || html
     }
     if (minifyOutput) {
-      formattedHTML = minifier.minify(formattedHTML)
+      formattedHTML = minifier.minify(formattedHTML, { collapseWhitespace: true })
     }
 
     return formattedHTML

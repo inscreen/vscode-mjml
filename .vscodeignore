@@ -2,7 +2,6 @@
 **/*.ts
 .vscode/**
 images/**/*.gif
-out/**
 src/**
 typings/**
 test/**
@@ -12,3 +11,4 @@ ISSUE_TEMPLATE.md
 tsconfig.json
 .eslintrc
 .eslintignore
+esbuild.js
