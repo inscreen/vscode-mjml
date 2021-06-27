@@ -38,7 +38,7 @@ export function mjmlToHtml(minify: boolean, beautify: boolean): string {
   try {
     return spawnSync(
       extensions.getExtension('danielknights.vscode-mjml')?.extensionPath +
-        '/node_modules/.bin/mjml',
+        '/node_modules/mjml-cli/bin/mjml',
       [
         getPath(),
         'skip',
