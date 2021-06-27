@@ -6,7 +6,7 @@ import {
   Position,
   TextDocument,
 } from 'vscode'
-import { isWithinRegex, getTagIndexes } from './utils'
+import { isWithinRegex, getTagIndexes, reverseString } from './utils'
 import regex from './resources/regex'
 
 export default class LinkedEditing {
@@ -33,8 +33,8 @@ export default class LinkedEditing {
       const typedText = document.getText(openTagRange)
 
       const tagIndexes = getTagIndexes(docText, {
-        start: `<${typedText}[^>]*>?`,
-        end: `(?<=</)${typedText}(?=>?)`,
+        start: `<${typedText}(\\s+[^>]*)?>`,
+        end: `(?<=</)${typedText}(?=\\s*>)`,
       })
 
       if (!tagIndexes) return
@@ -46,20 +46,30 @@ export default class LinkedEditing {
 
       return new LinkedEditingRanges([openTagRange, endRange])
     } else if (closingTagRange) {
-      const offset = document.offsetAt(closingTagRange.end) + '>'.length
-      const docText = document.getText().slice(0, offset).split('').reverse().join('')
-      const typedText = document.getText(closingTagRange).split('').reverse().join('')
+      const offset = document.offsetAt(closingTagRange.end)
+      const docText = document.getText()
+      const reversedDocText = reverseString(docText.slice(0, offset))
+      const reversedTypedText = reverseString(document.getText(closingTagRange))
 
-      const tagIndexes = getTagIndexes(docText, {
-        start: `>?${typedText}/<`,
-        end: `(?<=>?[^<]*)${typedText}(?=<)`,
+      // Account for extra whitespace
+      const docTextFromOffset = docText.slice(offset)
+      const closingTagBracket = docTextFromOffset.match(/\s*>/)
+      if (!closingTagBracket) return
+
+      const fullText = reverseString(closingTagBracket[0]) + reversedDocText
+      const tagIndexes = getTagIndexes(fullText, {
+        start: `>\\s*${reversedTypedText}/<`,
+        end: `(?<=>([^<]*\\s+)?)${reversedTypedText}(?=<)`,
       })
 
       if (!tagIndexes) return
 
+      const { nodeEnd } = tagIndexes
+      const closingLength = closingTagBracket[0].length
+
       const endRange = new Range(
-        document.positionAt(offset - tagIndexes.nodeEnd.startIndex),
-        document.positionAt(offset - tagIndexes.nodeEnd.endIndex),
+        document.positionAt(offset - nodeEnd.startIndex + closingLength),
+        document.positionAt(offset - nodeEnd.endIndex + closingLength),
       )
 
       return new LinkedEditingRanges([closingTagRange, endRange])
