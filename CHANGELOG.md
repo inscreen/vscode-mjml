@@ -3,6 +3,10 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [2.4.3] (27/06/2021)
+
+Replace native MJML options with [`HTMLMinifier`](https://www.npmjs.com/package/html-minifier) and [`JS Beautifier`](https://www.npmjs.com/package/js-beautify).
+
 ### [2.4.2] (27/06/2021)
 
 Fix MJML CLI path.

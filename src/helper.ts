@@ -1,9 +1,10 @@
 import { existsSync, readFileSync, statSync } from 'fs'
 import { basename, dirname, join as joinPath } from 'path'
-import { extensions, TextDocument, TextEditor, window } from 'vscode'
+import { TextDocument, TextEditor, window } from 'vscode'
 import { html as jsBeautify } from 'js-beautify'
 import { getExtension, getType as getMimeType } from 'mime'
-import { spawnSync } from 'child_process'
+import mjml2html from 'mjml'
+import minifier from 'html-minifier'
 
 import { workspaceConfig } from './extension'
 
@@ -19,6 +20,7 @@ export function renderMJML(cb: (content: string) => void): void {
   }
 
   const content: string = mjmlToHtml(
+    activeTextEditor.document.getText(),
     workspaceConfig.minifyHtmlOutput,
     workspaceConfig.beautifyHtmlOutput,
   )
@@ -34,22 +36,24 @@ export function isMJMLFile(document: TextDocument): boolean {
   return document.languageId === 'mjml' && (scheme === 'file' || scheme === 'untitled')
 }
 
-export function mjmlToHtml(minify: boolean, beautify: boolean): string {
+export function mjmlToHtml(
+  mjml: string,
+  minifyOutput: boolean,
+  beautifyOutput: boolean,
+): string {
   try {
-    return spawnSync(
-      extensions.getExtension('danielknights.vscode-mjml')?.extensionPath +
-        '/node_modules/mjml-cli/bin/mjml',
-      [
-        getPath(),
-        'skip',
-        '--config.beautify',
-        beautify.toString(),
-        '--config.minify',
-        minify.toString(),
-      ],
-    ).stdout.toString()
+    const { html } = mjml2html(mjml, { filePath: getPath(), validationLevel: 'skip' })
+    let formattedHTML = html
+
+    if (beautifyOutput) {
+      formattedHTML = beautifyHTML(html) || html
+    }
+    if (minifyOutput) {
+      formattedHTML = minifier.minify(formattedHTML)
+    }
+
+    return formattedHTML
   } catch (error) {
-    console.error(error)
     return ''
   }
 }
