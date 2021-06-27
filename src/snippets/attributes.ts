@@ -776,6 +776,12 @@ export default [
     els: ['mj-carousel'],
   },
   {
+    prefix: 'role',
+    body: 'role="$1"',
+    description: 'role attribute: `role=""`',
+    els: ['mj-table'],
+  },
+  {
     prefix: 'sizes',
     body: 'sizes="$1"',
     description: 'sizes attribute: `sizes=""`',
