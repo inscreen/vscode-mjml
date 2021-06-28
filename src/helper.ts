@@ -40,9 +40,11 @@ export function mjmlToHtml(
   mjml: string,
   minifyOutput: boolean,
   beautifyOutput: boolean,
+  path?: string,
 ): string {
   try {
-    const { html } = mjml2html(mjml, { filePath: getPath(), validationLevel: 'skip' })
+    const filePath = path || getPath()
+    const { html } = mjml2html(mjml, { filePath, validationLevel: 'skip' })
     let formattedHTML = html
 
     if (beautifyOutput) {
@@ -54,6 +56,7 @@ export function mjmlToHtml(
 
     return formattedHTML
   } catch (error) {
+    console.log(error)
     return ''
   }
 }

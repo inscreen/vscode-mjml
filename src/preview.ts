@@ -127,7 +127,7 @@ export default class Preview {
     }
 
     const docText = this.wrapInMjmlTemplate(document.getText())
-    const html: string = mjmlToHtml(docText, false, false)
+    const html: string = mjmlToHtml(docText, false, false, document.uri.fsPath)
 
     if (html) {
       this.addDocument(document)
