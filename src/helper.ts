@@ -44,7 +44,11 @@ export function mjmlToHtml(
 ): string {
   try {
     const filePath = path || getPath()
-    const { html } = mjml2html(mjml, { filePath, validationLevel: 'skip' })
+    const { html } = mjml2html(wrapIfComponent(mjml), {
+      filePath,
+      validationLevel: 'skip',
+    })
+
     let formattedHTML = html
 
     if (beautifyOutput) {
@@ -59,6 +63,13 @@ export function mjmlToHtml(
     console.log(error)
     return ''
   }
+}
+
+export function wrapIfComponent(text: string): string {
+  if (!/<mj-body[^>]*>/.test(text)) text = `<mj-body>${text}</mj-body>`
+  if (!/<mjml[^>]*>/.test(text)) text = `<mjml>${text}</mjml>`
+
+  return text
 }
 
 export function fixImages(text: string, mjmlPath: string): string {

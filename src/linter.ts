@@ -16,8 +16,7 @@ import mjml2html from 'mjml'
 import type { MJMLParseError } from 'mjml-core'
 
 import { workspaceConfig } from './extension'
-import { getPath } from './helper'
-
+import { getPath, wrapIfComponent } from './helper'
 export default class Linter {
   private diagnosticCollection!: DiagnosticCollection
 
@@ -71,35 +70,41 @@ export default class Linter {
     this.diagnosticCollection.dispose()
   }
 
-  private lintDocument(textDocument: TextDocument): void {
-    if (textDocument.languageId !== 'mjml') return
+  private lintDocument(document: TextDocument): void {
+    if (document.languageId !== 'mjml') return
 
     const diagnostics: Diagnostic[] = []
-    const errors = mjml2html(textDocument.getText(), {
-      minify: false,
-      beautify: false,
-      filePath: getPath(),
-      validationLevel: 'soft',
-    }).errors
 
-    if (errors && errors[0]) {
-      errors.forEach((error: MJMLParseError) => {
-        const line: number = error.line - 1
-        const currentLine: string = textDocument.lineAt(line).text
+    try {
+      const docText = wrapIfComponent(document.getText())
+      const errors = mjml2html(docText, {
+        minify: false,
+        beautify: false,
+        filePath: getPath(),
+        validationLevel: 'soft',
+      }).errors
 
-        diagnostics.push(
-          new Diagnostic(
-            new Range(
-              new Position(line, currentLine.indexOf('<')),
-              new Position(line, currentLine.length),
+      if (errors && errors[0]) {
+        errors.forEach((error: MJMLParseError) => {
+          const line: number = error.line - 1
+          const lineText: string = document.lineAt(line).text
+
+          diagnostics.push(
+            new Diagnostic(
+              new Range(
+                new Position(line, lineText.indexOf('<')),
+                new Position(line, lineText.length),
+              ),
+              error.message,
+              DiagnosticSeverity.Error,
             ),
-            error.message,
-            DiagnosticSeverity.Error,
-          ),
-        )
-      })
-    }
+          )
+        })
+      }
 
-    this.diagnosticCollection.set(textDocument.uri, diagnostics)
+      this.diagnosticCollection.set(document.uri, diagnostics)
+    } catch (ex) {
+      console.log(ex)
+    }
   }
 }
