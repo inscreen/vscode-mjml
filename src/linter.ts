@@ -13,10 +13,9 @@ import {
   workspace,
 } from 'vscode'
 import mjml2html from 'mjml'
-import type { MJMLParseError } from 'mjml-core'
 
 import { workspaceConfig } from './extension'
-import { getPath, wrapIfComponent } from './helper'
+import { getPath, getCWD } from './helper'
 export default class Linter {
   private diagnosticCollection!: DiagnosticCollection
 
@@ -76,16 +75,15 @@ export default class Linter {
     const diagnostics: Diagnostic[] = []
 
     try {
-      const docText = wrapIfComponent(document.getText())
+      const docText = document.getText()
       const errors = mjml2html(docText, {
-        minify: false,
-        beautify: false,
         filePath: getPath(),
         validationLevel: 'soft',
+        mjmlConfigPath: getCWD(getPath()),
       }).errors
 
-      if (errors && errors[0]) {
-        errors.forEach((error: MJMLParseError) => {
+      if (errors.length) {
+        errors.forEach((error) => {
           const line: number = error.line - 1
           const lineText: string = document.lineAt(line).text
 
@@ -104,7 +102,7 @@ export default class Linter {
 
       this.diagnosticCollection.set(document.uri, diagnostics)
     } catch (ex) {
-      console.log(ex)
+      this.diagnosticCollection.set(document.uri, diagnostics)
     }
   }
 }

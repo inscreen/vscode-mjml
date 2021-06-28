@@ -1,10 +1,11 @@
 import { existsSync, readFileSync, statSync } from 'fs'
-import { basename, dirname, join as joinPath } from 'path'
-import { TextDocument, TextEditor, window } from 'vscode'
+import { basename, dirname, join as joinPath, parse as parsePath } from 'path'
+import { TextDocument, TextEditor, window, workspace } from 'vscode'
 import { html as jsBeautify } from 'js-beautify'
 import { getExtension, getType as getMimeType } from 'mime'
 import mjml2html from 'mjml'
 import minifier from 'html-minifier'
+import type { MJMLParseError } from 'mjml-core'
 
 import { workspaceConfig } from './extension'
 
@@ -23,7 +24,7 @@ export function renderMJML(cb: (content: string) => void): void {
     activeTextEditor.document.getText(),
     workspaceConfig.minifyHtmlOutput,
     workspaceConfig.beautifyHtmlOutput,
-  )
+  ).html
 
   if (content) return cb(content)
 
@@ -41,27 +42,27 @@ export function mjmlToHtml(
   minifyOutput: boolean,
   beautifyOutput: boolean,
   path?: string,
-): string {
+): { html: string; errors: MJMLParseError[] } {
   try {
     const filePath = path || getPath()
-    const { html } = mjml2html(wrapIfComponent(mjml), {
+    const output = mjml2html(mjml, {
       filePath,
       validationLevel: 'skip',
+      mjmlConfigPath: getCWD(path),
     })
 
-    let formattedHTML = html
+    let formattedHTML = output.html
 
     if (beautifyOutput) {
-      formattedHTML = beautifyHTML(html) || html
+      formattedHTML = beautifyHTML(formattedHTML) || formattedHTML
     }
     if (minifyOutput) {
       formattedHTML = minifier.minify(formattedHTML, { collapseWhitespace: true })
     }
 
-    return formattedHTML
+    return { html: formattedHTML, errors: output.errors }
   } catch (error) {
-    console.log(error)
-    return ''
+    return { html: '', errors: [error] }
   }
 }
 
@@ -125,6 +126,16 @@ export function getPath(): string {
   }
 
   return ''
+}
+
+export function getCWD(mjmlPath?: string): string {
+  const { workspaceFolders } = workspace
+
+  if (workspaceFolders && workspaceFolders[0]) {
+    return workspaceFolders[0].uri.path
+  }
+
+  return mjmlPath ? parsePath(mjmlPath).dir : ''
 }
 
 function encodeImage(filePath: string, original: string): string {
