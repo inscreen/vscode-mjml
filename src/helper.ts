@@ -3,7 +3,8 @@ import { basename, dirname, join as joinPath, parse as parsePath } from 'path'
 import { TextDocument, TextEditor, window, workspace } from 'vscode'
 import { html as jsBeautify } from 'js-beautify'
 import { getExtension, getType as getMimeType } from 'mime'
-import mjml2html from 'mjml'
+// @ts-ignore
+import * as mjml2html from 'mjml'
 import minifier from 'html-minifier'
 import type { MJMLParseError } from 'mjml-core'
 
@@ -42,12 +43,13 @@ export function mjmlToHtml(
   minifyOutput: boolean,
   beautifyOutput: boolean,
   path?: string,
+  validation: 'strict' | 'soft' | 'skip' = 'skip',
 ): { html: string; errors: MJMLParseError[] } {
   try {
     const filePath = path || getPath()
     const output = mjml2html(mjml, {
       filePath,
-      validationLevel: 'skip',
+      validationLevel: validation,
       mjmlConfigPath: getCWD(path),
     })
 
@@ -64,13 +66,6 @@ export function mjmlToHtml(
   } catch (error) {
     return { html: '', errors: [error] }
   }
-}
-
-export function wrapIfComponent(text: string): string {
-  if (!/<mj-body[^>]*>/.test(text)) text = `<mj-body>${text}</mj-body>`
-  if (!/<mjml[^>]*>/.test(text)) text = `<mjml>${text}</mjml>`
-
-  return text
 }
 
 export function fixImages(text: string, mjmlPath: string): string {

@@ -12,10 +12,9 @@ import {
   window,
   workspace,
 } from 'vscode'
-import mjml2html from 'mjml'
 
 import { workspaceConfig } from './extension'
-import { getPath, getCWD } from './helper'
+import { getPath, mjmlToHtml } from './helper'
 export default class Linter {
   private diagnosticCollection!: DiagnosticCollection
 
@@ -76,11 +75,7 @@ export default class Linter {
 
     try {
       const docText = document.getText()
-      const errors = mjml2html(docText, {
-        filePath: getPath(),
-        validationLevel: 'soft',
-        mjmlConfigPath: getCWD(getPath()),
-      }).errors
+      const errors = mjmlToHtml(docText, false, false, getPath(), 'soft').errors
 
       if (errors.length) {
         errors.forEach((error) => {
