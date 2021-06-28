@@ -3,6 +3,10 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [2.4.6] (28/06/2021)
+
+Revert to previous version.
+
 ### [2.4.5] (28/06/2021)
 
 Wrap components in `mjml` and `mj-body` tags if not present (for linting and previewing).
