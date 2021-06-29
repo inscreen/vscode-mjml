@@ -75,7 +75,7 @@ export default class Linter {
 
     try {
       const docText = document.getText()
-      const errors = mjmlToHtml(docText, false, false, getPath(), 'soft').errors
+      const errors = mjmlToHtml(docText, false, false, getPath(), 'strict').errors
 
       if (errors.length) {
         errors.forEach((error) => {

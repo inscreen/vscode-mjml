@@ -3,8 +3,8 @@ import { basename, dirname, join as joinPath, parse as parsePath } from 'path'
 import { TextDocument, TextEditor, window, workspace } from 'vscode'
 import { html as jsBeautify } from 'js-beautify'
 import { getExtension, getType as getMimeType } from 'mime'
-// @ts-ignore
-import * as mjml2html from 'mjml'
+
+import mjml2html from 'mjml'
 import minifier from 'html-minifier'
 import type { MJMLParseError } from 'mjml-core'
 
@@ -59,12 +59,16 @@ export function mjmlToHtml(
       formattedHTML = beautifyHTML(formattedHTML) || formattedHTML
     }
     if (minifyOutput) {
-      formattedHTML = minifier.minify(formattedHTML, { collapseWhitespace: true })
+      formattedHTML = minifier.minify(formattedHTML, {
+        collapseWhitespace: true,
+        minifyCSS: false,
+        removeEmptyAttributes: true,
+      })
     }
 
     return { html: formattedHTML, errors: output.errors }
-  } catch (error) {
-    return { html: '', errors: [error] }
+  } catch (ex) {
+    return { html: '', errors: ex.errors }
   }
 }
 
