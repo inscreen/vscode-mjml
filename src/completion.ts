@@ -8,6 +8,7 @@ import {
   ProviderResult,
   Position,
   TextDocument,
+  CompletionItemKind,
 } from 'vscode'
 import { tagAttributes, cssProperties, htmlTags, mjmlSnippets } from './snippets'
 import { isWithinRegex } from './utils'
@@ -110,7 +111,11 @@ export default class Completion {
 
       prop.values.forEach((val) => {
         const body = addSemi ? val + ';' : val
-        const completionItem = createCompletionItem({ prefix: val, body }, '', 11)
+        const completionItem = createCompletionItem(
+          { prefix: val, body },
+          '',
+          CompletionItemKind.Value,
+        )
 
         snippetCompletions.push(completionItem)
       })
@@ -144,7 +149,7 @@ export default class Completion {
       position,
       mjmlSnippets,
       'MJML (Snippet)',
-      14,
+      CompletionItemKind.Snippet,
     )
   }
 
