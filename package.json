@@ -38,7 +38,7 @@
     "syntax"
   ],
   "engines": {
-    "vscode": "^1.57.0"
+    "vscode": "^1.60.0"
   },
   "activationEvents": [
     "onLanguage:mjml"
