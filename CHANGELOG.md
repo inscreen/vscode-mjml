@@ -3,6 +3,10 @@
 All notable changes to the "mjml" extension will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+### [2.4.9] (11/09/2021)
+
+Updated dependencies.
+
 ### [2.4.8] (29/06/2021)
 
 Bundle with esbuild.

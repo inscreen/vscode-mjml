@@ -6,7 +6,7 @@ import { getExtension, getType as getMimeType } from 'mime'
 
 import mjml2html from 'mjml'
 import minifier from 'html-minifier'
-import type { MJMLParseError } from 'mjml-core'
+import type { MJMLParseResults, MJMLParseError } from 'mjml-core'
 
 import { workspaceConfig } from './extension'
 
@@ -68,7 +68,7 @@ export function mjmlToHtml(
 
     return { html: formattedHTML, errors: output.errors }
   } catch (ex) {
-    return { html: '', errors: ex.errors }
+    return { html: '', errors: (ex as MJMLParseResults)?.errors || [] }
   }
 }
 
@@ -111,7 +111,9 @@ export function beautifyHTML(mjml: string): string | undefined {
 
     return beautified
   } catch (error) {
-    window.showErrorMessage(error)
+    if (typeof error === 'string') {
+      window.showErrorMessage(error)
+    }
 
     return
   }
