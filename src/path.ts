@@ -61,7 +61,7 @@ export default class PathLink {
       if (section === '..') level += 1
     })
 
-    const rootPath = document.fileName.split('/')
+    const rootPath = document.fileName.split(path.sep)
 
     if (!rootPath) return
 
