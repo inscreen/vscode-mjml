@@ -82,7 +82,7 @@ export default class Linter {
           const line: number = error.line - 1
           const lineText: string = document.lineAt(line).text
 
-          if (/^Attribute (pp-([a-z-])+, )*pp-([a-z-])+ (is|are) illegal$/.test(error.message)) {
+          if (/^Attributes? (pp-([a-z-])+, )*pp-([a-z-])+ (is|are) illegal$/.test(error.message)) {
             return
           }
 
