@@ -1,6 +1,6 @@
 # MJML
 
-This is a fork of the [@mjmlio extension](https://github.com/mjmlio/vscode-mjml), which itself, is a fork of [the original @attilabuti VSC extension.](https://github.com/attilabuti/vscode-mjml)
+This is an inScreen fork of [Daniel-Knights's fork](https://github.com/Daniel-Knights/vscode-mjml), itself a fork of the [@mjmlio extension](https://github.com/mjmlio/vscode-mjml), which itself, is a fork of [the original @attilabuti VSC extension.](https://github.com/attilabuti/vscode-mjml)
 
 ## Differences
 
